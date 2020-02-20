@@ -1,33 +1,29 @@
-// Load the Visualization API and the corechart package.
-google.charts.load('current', {'packages':['corechart']});
+/*
+Default structures required
+----------------------------
+<script src="https://www.gstatic.com/charts/loader.js"></script>
+<script>
+  google.charts.load('current', {packages: ['corechart']});
+  google.charts.setOnLoadCallback(drawChart);
+  ...
+</script>
+*/
 
-// Set a callback to run when the Google Visualization API is loaded.
-google.charts.setOnLoadCallback(drawChart);
 
-// Callback that creates and populates a data table,
-// instantiates the pie chart, passes in the data and
-// draws it.
-function drawChart() {
+let __VERSION_NAME__ = 'current'
+let __GRAPH_PACKAGES__ = ['corechart']
 
-// Create the data table.
-var data = new google.visualization.DataTable();
-data.addColumn('string', 'Topping');
-data.addColumn('number', 'Slices');
-data.addRows([
-['Mushrooms', 3],
-['Onions', 1],
-['Olives', 1],
-['Zucchini', 1],
-['Pepperoni', 2]
-]);
+let callGraphs = function() {}
 
-// Set chart options
-var options = {'title':'How Much Pizza I Ate Last Night',
-       'width':400,
-       'height':300};
+//With this method all graphs should be called from the callGraphs function
+google.charts.load(__VERSION_NAME__, {packages: __GRAPH_PACKAGES__, callback: callGraphs});
 
-// Instantiate and draw our chart, passing in some options.
-var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
-chart.draw(data, options);
+//Wrapping every data for the graphs in graphData
+//DataTable = 2D table = (rows and columns)
+let graphData = google.visualization.DataTable()
 
-}
+//Format for the graphData  = (dataType, value)
+graphData.addColumn('string', 'Country')
+graphData.addColumn('number', 'Population')
+
+
