@@ -16,31 +16,38 @@ let __GRAPH_PACKAGES__ = ['corechart']
 google.charts.load(__VERSION_NAME__, {packages: __GRAPH_PACKAGES__});
 google.charts.setOnLoadCallback(countryStats);
 
-var countryStats = ()=> {
+function countryStats() {
 	//Wrapping every data for the graphs in graphData
 	//DataTable = 2D table = (rows and columns)
-	let graphData = google.visualization.DataTable()
+	console.log("=> Populating country stats...")
+	var graphData = new google.visualization.DataTable()
 
 	//Format for the graphData  = (dataType, value)
 	graphData.addColumn('string', 'Country')
 	graphData.addColumn('number', 'Population')
 
+	//Each row is stored as an array in a collection of arrays
 	let data = [
-		'America' : 1000,
-		'Nigeria' : 2000
+		['America' , 1000],
+		['Nigeria' , 2000]
 	]
 
 	//Values of data should match the 2D nature of the columns
-	graph.addRows(data);
+	graphData.addRows(data);
 
 	let options = {
 		'title' : "The world's population",
 		'width' : 400,
 		'height' : 300,
-		'legend' : left
+		'legend' : "left"
 	}
 
-	
+	let webpageChartLocation = document.getElementById('chart_div')
+	let chart = new google.visualization.PieChart(webpageChartLocation)	
+
+	//Should be called whenever chart is updated, but doesn't update in real time (async function), so should wait for event to be fired first
+	//Options can be NULL when passed
+	chart.draw(graphData, options);
 }
 
 
