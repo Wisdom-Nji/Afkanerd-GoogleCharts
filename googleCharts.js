@@ -43,7 +43,7 @@ function countryStats_PieChart() {
 		'legend' : "left"
 	}
 
-	let webpageChartLocation = document.getElementById('chart_div')
+	let webpageChartLocation = document.getElementById('chart_div_PieChart')
 	let chart = new google.visualization.PieChart(webpageChartLocation)	
 
 	//Should be called whenever chart is updated, but doesn't update in real time (async function), so should wait for event to be fired first
@@ -78,7 +78,7 @@ function countryStats_BarChart() {
 		'legend' : "left"
 	}
 
-	let webpageChartLocation = document.getElementById('chart_div')
+	let webpageChartLocation = document.getElementById('chart_div_BarChart')
 	let chart = new google.visualization.BarChart(webpageChartLocation)	
 
 	//Should be called whenever chart is updated, but doesn't update in real time (async function), so should wait for event to be fired first
