@@ -13,17 +13,34 @@ Default structures required
 let __VERSION_NAME__ = 'current'
 let __GRAPH_PACKAGES__ = ['corechart']
 
-let callGraphs = function() {}
+google.charts.load(__VERSION_NAME__, {packages: __GRAPH_PACKAGES__});
+google.charts.setOnLoadCallback(countryStats);
 
-//With this method all graphs should be called from the callGraphs function
-google.charts.load(__VERSION_NAME__, {packages: __GRAPH_PACKAGES__, callback: callGraphs});
+var countryStats = ()=> {
+	//Wrapping every data for the graphs in graphData
+	//DataTable = 2D table = (rows and columns)
+	let graphData = google.visualization.DataTable()
 
-//Wrapping every data for the graphs in graphData
-//DataTable = 2D table = (rows and columns)
-let graphData = google.visualization.DataTable()
+	//Format for the graphData  = (dataType, value)
+	graphData.addColumn('string', 'Country')
+	graphData.addColumn('number', 'Population')
 
-//Format for the graphData  = (dataType, value)
-graphData.addColumn('string', 'Country')
-graphData.addColumn('number', 'Population')
+	let data = [
+		'America' : 1000,
+		'Nigeria' : 2000
+	]
+
+	//Values of data should match the 2D nature of the columns
+	graph.addRows(data);
+
+	let options = {
+		'title' : "The world's population",
+		'width' : 400,
+		'height' : 300,
+		'legend' : left
+	}
+
+	
+}
 
 
