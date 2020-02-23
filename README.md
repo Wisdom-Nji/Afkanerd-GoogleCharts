@@ -6,5 +6,6 @@ Afkanerd's reimplementation of Google Graphs
 
 `slicer = new slicers( DOM.element )`
 `slicer.data = [Array]`
+`slicer.type = "multiselect"
 `slicer.onchange( [anon function] )`
 `slicer.render()`
