@@ -8,4 +8,9 @@ Afkanerd's reimplementation of Google Graphs
 `slicer.data = [Array]`\
 `slicer.type = "multiselect"`\
 `slicer.onchange( [anon function] )`\
-`slicer.render()`\
+`slicer.render()`
+
+- graphs
+`graph = new graph( DOM.element)`\
+`graph.addSlicer( cl_slicers ) // cl_% = class`\
+`graph.type = "barchart"|"piechart"`\
