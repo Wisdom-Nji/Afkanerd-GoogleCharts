@@ -15,6 +15,7 @@ Afkanerd's reimplementation of Google Graphs
 `graph.type = "barchart"|"piechart"`\
 `graph.setTitle(string)`\
 `graph.setWidth( int )`\
+`graph.setData( array )`\
 `graph.setHeight( int )`\
 `graph.setLengendPosition( "left"|"right"|"top"|"buttom" )`\
 `graph.setOption( object )`\

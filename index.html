@@ -2,7 +2,23 @@
 	<head>
 	 <!--Load the AJAX API-->
 	    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-	    <script type="text/javascript" src="googleCharts.js">
+	    <script type="text/javascript" src="graphs.js"></script>
+	    <script>
+		let __VERSION_NAME__ = 'current'
+		let __GRAPH_PACKAGES__ = ['corechart']
+
+		google.charts.load(this.__VERSION_NAME__, {packages: this.__GRAPH_PACKAGES__});
+
+	    	let graphs = new Graphs('char_div_PieChart', google);
+		graphs.setTitle("Testing framework");
+		let data = [
+			['America' , 1000],
+			['Nigeria' , 2000]
+		]
+		graphs.setData( data );
+		graphs.setColumn( 'string', 'Country');
+		graphs.setColumn( 'number', 'Population');
+		graphs.render();
 	    </script>
 	</head>
 	<body>
