@@ -8,17 +8,19 @@
 		let __GRAPH_PACKAGES__ = ['corechart']
 
 		google.charts.load(this.__VERSION_NAME__, {packages: this.__GRAPH_PACKAGES__});
+		google.charts.setOnLoadCallback(()=>{
+			let graphs = new Graphs('char_div_PieChart', google);
+			graphs.setTitle("Testing framework");
+			graphs.type("bar");
+			let data = [
+				['America' , 1000],
+				['Nigeria' , 2000]
+			]
+			graphs.addColumn( 'string', 'Country');
+			graphs.addColumn( 'number', 'Population');
+			graphs.render( data );
+		})
 
-	    	let graphs = new Graphs('char_div_PieChart', google);
-		graphs.setTitle("Testing framework");
-		let data = [
-			['America' , 1000],
-			['Nigeria' , 2000]
-		]
-		graphs.setData( data );
-		graphs.setColumn( 'string', 'Country');
-		graphs.setColumn( 'number', 'Population');
-		graphs.render();
 	    </script>
 	</head>
 	<body>

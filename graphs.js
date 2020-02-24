@@ -2,19 +2,18 @@
 class Graphs {
 
 	constructor( DOMLocation, google ) {
-		console.log(google)
 		this.DOMLocation = DOMLocation;
 		this.type = ""
 		this.option = {}
-		google.charts.load(this.__VERSION_NAME__, {packages: this.__GRAPH_PACKAGES__});
-
+		this.columnCollection = []
 		//Wrapping every data for the graphs in graphData
 		//DataTable = 2D table = (rows and columns)
-		this.graphData = new google.visualization.DataTable()
+		this.google = google
+		this.graphData = new this.google.visualization.DataTable()
 	}
 
 	addColumn( type, value ) {
-		this.graphData.addColumn( type, value)
+		this.columnCollection.push([type, value]);
 	}
 
 	addSlicer( CL_SLICER ) {
@@ -26,12 +25,12 @@ class Graphs {
 		this.title = title;
 	}
 
-	setData( data ) {
-		this.graphData.addRows( data );
-	}
-
 	setWidth( width ) {
 		this.option.width = width;
+	}
+
+	setType( type ) {
+		this.type = type;
 	}
 
 	setHeight( height ) {
@@ -46,25 +45,26 @@ class Graphs {
 		this.option = option;
 	}
 
-	render() {
+	render( data ) {
 		//TODO: This graph draws here
-		google.charts.setOnLoadCallback(()=>{
-			let webpageChartLocation = document.getElementById( this.DOMLocation )
-			let chart = "";
-			switch( this.type ) {
-				case "bar":
-					chart = new google.visualization.BarChart(webpageChartLocation)	
-					//Options can be NULL when passed
-					chart.draw(this.graphData, this.options);
-				break;
+		for(let i in this.columnCollection) 
+			this.graphData.addColumn( this.columnCollection[i][0], this.columnCollection[i][1] );
+		this.graphData.addRows( data );
+		let webpageChartLocation = document.getElementById( this.DOMLocation )
+		let chart = "";
+		switch( this.type ) {
+			case "bar":
+				chart = new this.google.visualization.BarChart(webpageChartLocation)	
+				//Options can be NULL when passed
+				chart.draw(this.graphData, this.options);
+			break;
 
-				case "pie":
-					chart = new google.visualization.PieChart(webpageChartLocation)	
-					//Options can be NULL when passed
-					chart.draw(this.graphData, this.options);
-				break;
-			}
-		});
+			case "pie":
+				chart = new this.google.visualization.PieChart(webpageChartLocation)	
+				//Options can be NULL when passed
+				chart.draw(this.graphData, this.options);
+			break;
+		}
 	}
 
 }
