@@ -1,19 +1,38 @@
 
+module.exports = 
 class Graphs {
 	this.type = ""
-	constructor( DOMLocation ) {}
+	constructor( DOMLocation ) {
+		this.DOMLocation = DOMLocation;
+	}
 
-	addSlicer( cl_slicers ) // cl_% = class
+	addSlicer( CL_SLICER ) {
+		this.slicerCollection.push(CL_SLICER)
+		//TODO: bind and listen to slicer changes
+	}
 
-	setTitle( title )
+	setTitle( title ) {
+		this.title = title;
+	}
 
-	setWidth( width )
+	setWidth( width ) {
+		this.width = width;
+	}
 
-	setHeight( height )
+	setHeight( height ) {
+		this.height = height;
+	}
 
-	setLengendPosition( position )
+	setLengendPosition( position ) {
+		this.position = position;
+	}
 
-	setOption( option )
+	setOption( option ) {
+		this.option = option;
+	}
 
-	render()
+	render() {
+		//TODO: This graph draws here
+	}
+
 }
