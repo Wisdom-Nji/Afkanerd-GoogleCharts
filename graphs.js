@@ -2,6 +2,10 @@
 class Graphs {
 
 	constructor( DOMLocation, google ) {
+		if( document.getElementById( DOMLocation ) == null ) {
+			console.error("=> DOMLocation is not a valid path");
+		}
+
 		this.DOMLocation = DOMLocation;
 		this.type = ""
 		this.option = {}
