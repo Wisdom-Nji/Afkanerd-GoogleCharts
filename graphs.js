@@ -50,21 +50,20 @@ class Graphs {
 		for(let i in this.columnCollection) 
 			this.graphData.addColumn( this.columnCollection[i][0], this.columnCollection[i][1] );
 		this.graphData.addRows( data );
-		let webpageChartLocation = document.getElementById( this.DOMLocation )
-		let chart = "";
+		var webpageChartLocation = document.getElementById( this.DOMLocation )
+		var chart;
 		switch( this.type ) {
 			case "bar":
 				chart = new this.google.visualization.BarChart(webpageChartLocation)	
 				//Options can be NULL when passed
-				chart.draw(this.graphData, this.options);
 			break;
 
 			case "pie":
 				chart = new this.google.visualization.PieChart(webpageChartLocation)	
 				//Options can be NULL when passed
-				chart.draw(this.graphData, this.options);
 			break;
 		}
+		chart.draw(this.graphData, this.options);
 	}
 
 }
