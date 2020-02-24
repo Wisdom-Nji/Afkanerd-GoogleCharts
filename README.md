@@ -10,13 +10,14 @@ Afkanerd's reimplementation of Google Graphs
 `slicer.render()`
 
 - graphs\
-`graph = new graph( DOM.element)`\
+`graph = new graph( DOM.element, googleCharts )`\
 `graph.addSlicer( cl_slicers ) // cl_% = class`\
-`graph.type = "barchart"|"piechart"`\
+`graph.addColumn( string, string)`\
 `graph.setTitle(string)`\
 `graph.setWidth( int )`\
 `graph.setData( array )`\
+`graph.setType( string )`\
 `graph.setHeight( int )`\
 `graph.setLengendPosition( "left"|"right"|"top"|"buttom" )`\
 `graph.setOption( object )`\
-`graph.render()`
+`graph.render( [array] )`
