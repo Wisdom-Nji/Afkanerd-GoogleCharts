@@ -16,6 +16,10 @@ class Graphs {
 		this.graphData = new google.visualization.DataTable()
 	}
 
+	addColumn( type, value ) {
+		this.graphData.addColumn( type, value)
+	}
+
 	addSlicer( CL_SLICER ) {
 		this.slicerCollection.push(CL_SLICER)
 		//TODO: bind and listen to slicer changes
