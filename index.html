@@ -3,10 +3,17 @@
 	 <!--Load the AJAX API-->
 	    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 	    <script type="text/javascript" src="graphs.js"></script>
+	    <script type="text/javascript" src="slicers.js"></script>
 	</head>
 	<body>
 		<div id="chart_div_PieChart" style="width:400; height:300"></div>
 		<div id="chart_div_BarChart" style="width:400; height:300"></div>
+		
+		<div id="slicers">
+			<select id="slicers_div">
+				
+			</select>
+		</div>
 
 		<script>
 		let __VERSION_NAME__ = 'current'
@@ -24,6 +31,10 @@
 			graphs.addColumn( 'string', 'Country');
 			graphs.addColumn( 'number', 'Population');
 			graphs.render( data );
+
+			let slicers = new Slicers('slicers_div');
+			slicers.setData = ['Country', 'Population'];
+			slicers.render();
 		})
 
 		</script>

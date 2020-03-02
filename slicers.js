@@ -1,8 +1,9 @@
 
 class Slicers {
 	// slicer = new slicers( DOM.element )
-	constructor( DOMElement ) {
-		this.DOMElement = DOMElement;
+	constructor( LabelDOMElement ) {
+		this.LabelDOMElement = LabelDOMElement;
+		this.type = "multiselect";
 	}
 	
 	set setData( data ) { //Should be an array
@@ -17,5 +18,11 @@ class Slicers {
 
 	addEmittingEvents( eventHandler ) {}
 
-	render() {}
+	render() {
+		let DOMElement = document.getElementById( this.LabelDOMElement );
+		for( let i in this.data ) {
+			let option = new Option(this.data[i], i );
+			DOMElement.appendChild(option);
+		}
+	}
 }
