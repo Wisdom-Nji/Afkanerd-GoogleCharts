@@ -22,16 +22,17 @@ class Slicers extends Event {
 		this.DOMElement.appendChild( optgroup );
 	}
 
-	set setType( type ) {
-		this.type = type;
-	}
+	// addData( data ) - this is useful for adding data without iterating through all the data points
 
 	addListeningEvents( eventHandler ) {}
 
 	addEmittingEvents( eventHandler ) {
 		switch(eventHandler) {
 			case 'onchange':
-			this.DOMElement.onchange = ()=> { this.DOMElement.dispatchEvent(new Event('changed', {"composed": true})); }
+			this.DOMElement.onchange = ()=> { 
+				this.DOMElement.dispatchEvent(new Event('changed', {"composed": true})); 
+				console.log("New Event Emitted");
+			}
 			break;
 		}
 	}
