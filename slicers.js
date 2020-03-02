@@ -7,14 +7,15 @@ class Slicers extends Event {
 		super('onchange');
 		this.LabelDOMElement = LabelDOMElement;
 		this.DOMElement = document.getElementById( LabelDOMElement );
+		this.value = {}
 	}
 	
-	set setData( data ) { //Should be an array
+	set setData( data ) { //This is data to populate the slicer with
 		var i = 0;
 		let optgroup = document.createElement("optgroup");
-		optgroup.label = data[i];
+		optgroup.label = 'sample label'
 
-		for(let i=1;i<data.length;i++) {
+		for(;i<data.length;i++) {
 			let option = new Option(data[i], i );
 			optgroup.appendChild(option);
 		}

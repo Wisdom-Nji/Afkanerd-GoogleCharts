@@ -6,28 +6,54 @@
 	    <script type="text/javascript" src="slicers.js"></script>
 	</head>
 	<body>
-		<div id="slicers"><select id="slicers_div" multiple size="5"></select></div>
+		<div id="slicers"><select id="slicers_div" multiple size="4" style="width: 300"></select></div>
 		<div id="chart_div_BarChart" style="width:400; height:300"></div>
 
 		<script>
 		let __VERSION_NAME__ = 'current'
 		let __GRAPH_PACKAGES__ = ['corechart']
 
+		var sampleData = [
+			{
+				'Region' : 'Test Region 1',
+				'Site' : 'Test Site 1',
+				'Date' : '2020-01-01',
+				'Number' : 10
+			},
+			{
+				'Region' : 'Test Region 2',
+				'Site' : 'Test Site 2',
+				'Date' : '2020-01-01',
+				'Number' : 20
+			}
+		]
+
 		google.charts.load(__VERSION_NAME__, {packages: __GRAPH_PACKAGES__});
 		google.charts.setOnLoadCallback(function() {
 			let graphs = new Graphs('chart_div_BarChart', google);
 			graphs.setTitle("Testing framework");
 			graphs.setType("bar");
-			let data = [
-				['America' , 1000],
-				['Nigeria' , 2000]
-			]
+			let data = (()=>{
+				let v_data = []
+				for( let i in sampleData ) {
+					v_data.push( [sampleData[i]['Region'], sampleData[i]['Number']] )
+				}
+				return v_data;
+			})()
 			graphs.addColumn( 'string', 'Country');
 			graphs.addColumn( 'number', 'Population');
 			graphs.render( data );
 
 			let slicers = new Slicers('slicers_div');
-			slicers.setData = data[0];
+			slicers.setData = (()=>{
+				let v_data = []
+				for( let i in sampleData ) {
+					v_data.push( sampleData[i]['Region'] );
+				}
+				return v_data;
+			})()
+			// slicers.setLabelOption = 'Name of region' and data is populated site data
+			//label, data
 			slicers.addEmittingEvents('onchange');
 		})
 
