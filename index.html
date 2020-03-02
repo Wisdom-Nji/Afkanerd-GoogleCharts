@@ -6,14 +6,8 @@
 	    <script type="text/javascript" src="slicers.js"></script>
 	</head>
 	<body>
-		<div id="chart_div_PieChart" style="width:400; height:300"></div>
+		<div id="slicers"><select id="slicers_div" multiple size="5"></select></div>
 		<div id="chart_div_BarChart" style="width:400; height:300"></div>
-		
-		<div id="slicers">
-			<select id="slicers_div">
-				
-			</select>
-		</div>
 
 		<script>
 		let __VERSION_NAME__ = 'current'
@@ -34,7 +28,7 @@
 
 			let slicers = new Slicers('slicers_div');
 			slicers.setData = ['Country', 'Population'];
-			slicers.render();
+			slicers.addEmittingEvents('onchange');
 		})
 
 		</script>

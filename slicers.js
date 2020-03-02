@@ -1,13 +1,19 @@
 
-class Slicers {
+'use strict';
+
+class Slicers extends Event {
 	// slicer = new slicers( DOM.element )
 	constructor( LabelDOMElement ) {
+		super('onchange');
 		this.LabelDOMElement = LabelDOMElement;
-		this.type = "multiselect";
+		this.DOMElement = document.getElementById( LabelDOMElement );
 	}
 	
 	set setData( data ) { //Should be an array
-		this.data = data;
+		for( let i in data ) {
+			let option = new Option(data[i], i );
+			this.DOMElement.appendChild(option);
+		}
 	}
 
 	set setType( type ) {
@@ -16,13 +22,11 @@ class Slicers {
 
 	addListeningEvents( eventHandler ) {}
 
-	addEmittingEvents( eventHandler ) {}
-
-	render() {
-		let DOMElement = document.getElementById( this.LabelDOMElement );
-		for( let i in this.data ) {
-			let option = new Option(this.data[i], i );
-			DOMElement.appendChild(option);
+	addEmittingEvents( eventHandler ) {
+		switch(eventHandler) {
+			case 'onchange':
+			this.DOMElement.onchange = ()=> { this.DOMElement.dispatchEvent(new Event('changed', {"composed": true})); }
+			break;
 		}
 	}
 }
