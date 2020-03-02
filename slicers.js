@@ -10,10 +10,15 @@ class Slicers extends Event {
 	}
 	
 	set setData( data ) { //Should be an array
-		for( let i in data ) {
+		var i = 0;
+		let optgroup = document.createElement("optgroup");
+		optgroup.label = data[i];
+
+		for(let i=1;i<data.length;i++) {
 			let option = new Option(data[i], i );
-			this.DOMElement.appendChild(option);
+			optgroup.appendChild(option);
 		}
+		this.DOMElement.appendChild( optgroup );
 	}
 
 	set setType( type ) {

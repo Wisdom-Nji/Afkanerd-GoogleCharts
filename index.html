@@ -27,7 +27,7 @@
 			graphs.render( data );
 
 			let slicers = new Slicers('slicers_div');
-			slicers.setData = ['Country', 'Population'];
+			slicers.setData = data[0];
 			slicers.addEmittingEvents('onchange');
 		})
 
