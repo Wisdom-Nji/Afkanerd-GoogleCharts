@@ -2,7 +2,6 @@
 'use strict';
 
 class Slicers extends Event {
-	// slicer = new slicers( DOM.element )
 	constructor( LabelDOMElement ) {
 		super('onchange');
 		this.LabelDOMElement = LabelDOMElement;
@@ -13,7 +12,7 @@ class Slicers extends Event {
 	set setData( data ) { //This is data to populate the slicer with
 		var i = 0;
 		let optgroup = document.createElement("optgroup");
-		optgroup.label = 'sample label'
+		optgroup.label = 'sample label' //TODO:
 
 		for(;i<data.length;i++) {
 			let option = new Option(data[i], i );
@@ -22,7 +21,7 @@ class Slicers extends Event {
 		this.DOMElement.appendChild( optgroup );
 	}
 
-	// addData( data ) - this is useful for adding data without iterating through all the data points
+	// addData( data ) - this is useful for adding data without iterating through all the data points //TODO:
 
 	addListeningEvents( eventHandler ) {}
 
