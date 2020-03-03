@@ -17,7 +17,7 @@ class Slicers extends Event {
 		let data = (()=> {
 			let v_data = [];
 			for( let i in sampleData ) {
-				v_data.push( sampleData[i][this.columnValue] );
+				v_data.push( sampleData[i][this.independentVariable] );
 			}
 			return v_data;
 		})()
@@ -33,8 +33,12 @@ class Slicers extends Event {
 		this.DOMElement.appendChild( optgroup );
 	}
 
-	set setColumnValue( columnValue ) {
-		this.columnValue = columnValue;
+	set setIndependentVariable( independentVariable ) {
+		this.independentVariable = independentVariable;
+	}
+
+	set setDependedVariable( columnValue ) {
+		this.dependentVariable = columnValue;
 	}
 
 	// addData( data ) - this is useful for adding data without iterating through all the data points //TODO:

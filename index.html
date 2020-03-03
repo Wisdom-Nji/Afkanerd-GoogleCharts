@@ -53,16 +53,18 @@
 
 			// Testing Slicer:1
 			let slicers = new Slicers('slicers_div');
-			slicers.setColumnValue = 'Region';
+			slicers.setIndependentVariable = 'Region';
 			slicers.setData = sampleData;
-			slicers.setDependentVariable = 
+			slicers.setDependentVariable = 'Number'
 			graphs.addSlicer( slicers );
 
 			// Testing Slicer:2
+			/*
 			let slicers_1 = new Slicers('slicers_div_1');
-			slicers_1.setColumnValue = 'Site';
+			slicers_1.setIndependentVariable = 'Site';
 			slicers_1.setData = sampleData;
 			graphs.addSlicer( slicers_1 );
+			*/
 		})
 
 		</script>

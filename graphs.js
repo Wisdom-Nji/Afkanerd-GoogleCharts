@@ -55,12 +55,12 @@ class Graphs {
 	addSlicer( slicer ) {
 		slicer.DOMElement.onchange = ()=>{
 			console.log("=> Graph should change with slicer");
-			if(typeof slicer.columnValue == "undefined") {
+			if(typeof slicer.independentVariable == "undefined") {
 				console.error("=> colValue for slicer undefined");
 				return;
 			}
 
-			console.log("=> Adjusting graph for:", slicer.columnValue );
+			console.log("=> Adjusting graph for:", slicer.independentVariable );
 		}
 	}
 
