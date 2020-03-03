@@ -1,3 +1,5 @@
+'use strict';
+
 
 class Graphs {
 
@@ -7,6 +9,7 @@ class Graphs {
 		}
 
 		this.DOMLocation = DOMLocation;
+		this.DOMElement = document.getElementById( this.DOMLocation );
 		this.type = ""
 		this.option = {}
 		this.columnCollection = []
@@ -49,21 +52,32 @@ class Graphs {
 		this.option = option;
 	}
 
+	addSlicer( slicer ) {
+		slicer.DOMElement.onchange = ()=>{
+			console.log("=> Graph should change with slicer");
+			if(typeof slicer.columnValue == "undefined") {
+				console.error("=> colValue for slicer undefined");
+				return;
+			}
+
+			console.log("=> Adjusting graph for:", slicer.columnValue );
+		}
+	}
+
 	render( data ) {
 		//TODO: This graph draws here
 		for(let i in this.columnCollection) 
 			this.graphData.addColumn( this.columnCollection[i][0], this.columnCollection[i][1] );
 		this.graphData.addRows( data );
-		var webpageChartLocation = document.getElementById( this.DOMLocation )
 		var chart;
 		switch( this.type ) {
 			case "bar":
-				chart = new this.google.visualization.BarChart(webpageChartLocation)	
+				chart = new this.google.visualization.BarChart( this.DOMElement )	
 				//Options can be NULL when passed
 			break;
 
 			case "pie":
-				chart = new this.google.visualization.PieChart(webpageChartLocation)	
+				chart = new this.google.visualization.PieChart( this.DOMElement )	
 				//Options can be NULL when passed
 			break;
 		}

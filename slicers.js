@@ -7,6 +7,9 @@ class Slicers extends Event {
 		this.LabelDOMElement = LabelDOMElement;
 		this.DOMElement = document.getElementById( LabelDOMElement );
 		this.value = {}
+
+		this.onchange_event = document.createEvent('Event');
+		this.onchange_event.initEvent('slicer_changed', true, false);
 	}
 	
 	set setData( data ) { //This is data to populate the slicer with
@@ -21,18 +24,9 @@ class Slicers extends Event {
 		this.DOMElement.appendChild( optgroup );
 	}
 
-	// addData( data ) - this is useful for adding data without iterating through all the data points //TODO:
-
-	addListeningEvents( eventHandler ) {}
-
-	addEmittingEvents( eventHandler ) {
-		switch(eventHandler) {
-			case 'onchange':
-			this.DOMElement.onchange = ()=> { 
-				this.DOMElement.dispatchEvent(new Event('changed', {"composed": true})); 
-				console.log("New Event Emitted");
-			}
-			break;
-		}
+	set setColumnValue( columnValue ) {
+		this.columnValue = columnValue;
 	}
+
+	// addData( data ) - this is useful for adding data without iterating through all the data points //TODO:
 }

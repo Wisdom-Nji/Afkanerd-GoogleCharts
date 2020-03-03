@@ -2,8 +2,8 @@
 	<head>
 	 <!--Load the AJAX API-->
 	    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-	    <script type="text/javascript" src="graphs.js"></script>
 	    <script type="text/javascript" src="slicers.js"></script>
+	    <script type="text/javascript" src="graphs.js"></script>
 	</head>
 	<body>
 		<div id="slicers"><select id="slicers_div" multiple size="4" style="width: 300"></select></div>
@@ -45,6 +45,7 @@
 			graphs.render( data );
 
 			let slicers = new Slicers('slicers_div');
+			slicers.setColumnValue = 'Region';
 			slicers.setData = (()=>{
 				let v_data = []
 				for( let i in sampleData ) {
@@ -54,7 +55,7 @@
 			})()
 			// slicers.setLabelOption = 'Name of region' and data is populated site data
 			//label, data
-			slicers.addEmittingEvents('onchange');
+			graphs.addSlicer( slicers );
 		})
 
 		</script>
