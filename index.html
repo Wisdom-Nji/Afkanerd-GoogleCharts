@@ -17,9 +17,15 @@
 		var sampleData = [
 			{
 				'Region' : 'Test Region 1',
-				'Site' : 'Test Site 1',
+				'Site' : 'Test Region 1_S1',
 				'Date' : '2020-01-01',
 				'Number' : 10
+			},
+			{
+				'Region' : 'Test Region 1',
+				'Site' : 'Test Region 1_S2',
+				'Date' : '2020-01-01',
+				'Number' : 50
 			},
 			{
 				'Region' : 'Test Region 2',
@@ -41,14 +47,15 @@
 				}
 				return v_data;
 			})()
-			graphs.addColumn( 'string', 'Country');
-			graphs.addColumn( 'number', 'Population');
+			graphs.addColumn( 'number', 'Number');
+			graphs.addColumn( 'date', 'Date');
 			graphs.render( data );
 
 			// Testing Slicer:1
 			let slicers = new Slicers('slicers_div');
 			slicers.setColumnValue = 'Region';
 			slicers.setData = sampleData;
+			slicers.setDependentVariable = 
 			graphs.addSlicer( slicers );
 
 			// Testing Slicer:2
