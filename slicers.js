@@ -12,7 +12,16 @@ class Slicers extends Event {
 		this.onchange_event.initEvent('slicer_changed', true, false);
 	}
 	
-	set setData( data ) { //This is data to populate the slicer with
+	set setData( sampleData ) { //This is data to populate the slicer with
+		let v_data = []
+		let data = (()=> {
+			let v_data = [];
+			for( let i in sampleData ) {
+				v_data.push( sampleData[i][this.columnValue] );
+			}
+			return v_data;
+		})()
+
 		var i = 0;
 		let optgroup = document.createElement("optgroup");
 		optgroup.label = 'sample label' //TODO:

@@ -7,6 +7,7 @@
 	</head>
 	<body>
 		<div id="slicers"><select id="slicers_div" multiple size="4" style="width: 300"></select></div>
+		<div id="slicers"><select id="slicers_div_1" multiple size="4" style="width: 300"></select></div>
 		<div id="chart_div_BarChart" style="width:400; height:300"></div>
 
 		<script>
@@ -44,18 +45,17 @@
 			graphs.addColumn( 'number', 'Population');
 			graphs.render( data );
 
+			// Testing Slicer:1
 			let slicers = new Slicers('slicers_div');
 			slicers.setColumnValue = 'Region';
-			slicers.setData = (()=>{
-				let v_data = []
-				for( let i in sampleData ) {
-					v_data.push( sampleData[i]['Region'] );
-				}
-				return v_data;
-			})()
-			// slicers.setLabelOption = 'Name of region' and data is populated site data
-			//label, data
+			slicers.setData = sampleData;
 			graphs.addSlicer( slicers );
+
+			// Testing Slicer:2
+			let slicers_1 = new Slicers('slicers_div_1');
+			slicers_1.setColumnValue = 'Site';
+			slicers_1.setData = sampleData;
+			graphs.addSlicer( slicers_1 );
 		})
 
 		</script>
