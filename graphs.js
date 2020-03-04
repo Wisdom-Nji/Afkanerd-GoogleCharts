@@ -59,9 +59,12 @@ class Graphs {
 	getData( independentVariable, values ) {
 		return new Promise( (resolve, reject)=> {
 			let v_data = []
+			// console.log("=>Get data for: ");
+			// console.log(values)
 			for(let i in this.data ) {
-				if(values.findIndex( variables => this.data[i].independentVariable == variables ) == -1 ) resolve( [] );
-				v_data.push( this.data[i] );
+				// console.log("=> searching: ",this.data[i][independentVariable], "against",values);
+				if(values.findIndex( variables => this.data[i][independentVariable] == variables ) != -1 ) 
+					v_data.push( this.data[i] );
 			}
 			resolve(v_data);
 		});

@@ -39,7 +39,7 @@ class Slicers extends Event {
 		optgroup.label = 'sample label' //TODO:
 
 		for(;i<data.length;i++) {
-			let option = new Option(data[i], i );
+			let option = new Option(data[i], data[i] );
 			optgroup.appendChild(option);
 		}
 		this.DOMElement.appendChild( optgroup );
