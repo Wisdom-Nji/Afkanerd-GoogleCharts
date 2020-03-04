@@ -59,13 +59,10 @@ class Graphs {
 	getData( independentVariable, values ) {
 		return new Promise( (resolve, reject)=> {
 			let v_data = []
-			// console.log("=>Get data for: ");
-			// console.log(values)
-			for(let i in this.data ) {
-				// console.log("=> searching: ",this.data[i][independentVariable], "against",values);
+			for(let i in this.data )
 				if(values.findIndex( variables => this.data[i][independentVariable] == variables ) != -1 ) 
 					v_data.push( this.data[i] );
-			}
+			
 			resolve(v_data);
 		});
 
@@ -95,10 +92,8 @@ class Graphs {
 
 	addSlicer( slicer ) {
 		slicer.DOMElement.addEventListener('value_changed', async ( args )=>{
-			console.log("=> Changed values: ", args.detail);	
-
 			let data = await this.getData(slicer.independentVariable, args.detail );
-			console.log(data);
+			console.log("=> Graphing data:", data);
 		});
 	}
 
