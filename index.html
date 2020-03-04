@@ -8,7 +8,7 @@
 	<body>
 		<div id="slicers"><select id="slicers_div" multiple size="4" style="width: 300"></select></div>
 		<div id="slicers"><select id="slicers_div_1" multiple size="4" style="width: 300"></select></div>
-		<div id="chart_div_BarChart" style="width:400; height:300"></div>
+		<div id="chart_div_BarChart"></div>
 
 		<script>
 		let __VERSION_NAME__ = 'current'
@@ -38,8 +38,15 @@
 		google.charts.load(__VERSION_NAME__, {packages: __GRAPH_PACKAGES__});
 		google.charts.setOnLoadCallback(function() {
 			let graphs = new Graphs('chart_div_BarChart', google);
+			let options = {
+				"height":600,
+				"width":600
+			}
+			graphs.setOption( options );
 			graphs.setTitle("Testing framework");
 			graphs.setType("bar");
+
+			/*
 			let data = (()=>{
 				let v_data = []
 				for( let i in sampleData ) {
@@ -48,9 +55,12 @@
 				}
 				return v_data;
 			})()
+			*/
+			
+			graphs.bindData( sampleData );
 			graphs.addColumn( 'number', 'Number');
 			graphs.addColumn( 'date', 'Date');
-			graphs.render( data );
+			//graphs.render( data );
 
 			// Testing Slicer:1
 			let slicers = new Slicers('slicers_div');
