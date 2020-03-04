@@ -8,8 +8,18 @@ class Slicers extends Event {
 		this.DOMElement = document.getElementById( LabelDOMElement );
 
 		this.DOMElement.onchange = ()=>{
-			console.log("=> setting slicer value: ", this.DOMElement.value );
-			let valueChangeEvent = new CustomEvent("value_changed", { detail: this.DOMElement.value });
+			//console.log("=> setting slicer value: ", this.DOMElement.value );
+			let data = (()=> {
+				let v_data = []
+				for(let i in this.DOMElement.options) {
+					let option = this.DOMElement.options[i];
+					if(option.selected) 
+						v_data.push(option.value);
+				}
+				return v_data;
+			})()
+
+			let valueChangeEvent = new CustomEvent("value_changed", { detail: data })
 			this.DOMElement.dispatchEvent( valueChangeEvent );
 		}
 	}

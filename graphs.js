@@ -91,8 +91,11 @@ class Graphs {
 	}
 
 	addSlicer( slicer ) {
-		slicer.DOMElement.addEventListener('value_changed', ( args )=>{
+		slicer.DOMElement.addEventListener('value_changed', async ( args )=>{
 			console.log("=> Changed values: ", args.detail);	
+
+			let data = await this.getData(slicer.independentVariable, args.detail );
+			console.log(data);
 		});
 	}
 
