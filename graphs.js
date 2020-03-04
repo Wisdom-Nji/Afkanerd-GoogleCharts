@@ -91,18 +91,9 @@ class Graphs {
 	}
 
 	addSlicer( slicer ) {
-		slicer.DOMElement.onchange = async ()=>{
-			console.log("=> Graph should change with slicer");
-			if(typeof slicer.independentVariable == "undefined") {
-				console.error("=> colValue for slicer undefined");
-				return;
-			}
-
-			console.log("=> Adjusting graph for:", slicer.independentVariable, slicer.dependentVariable);
-
-			let data = await getData(slicer.independentVariable, slicer.values);
-			render( data );
-		}
+		slicer.DOMElement.addEventListener('value_changed', ( args )=>{
+			console.log("=> Changed values: ", args.detail);	
+		});
 	}
 
 }

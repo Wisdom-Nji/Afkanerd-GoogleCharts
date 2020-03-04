@@ -6,10 +6,12 @@ class Slicers extends Event {
 		super('onchange');
 		this.LabelDOMElement = LabelDOMElement;
 		this.DOMElement = document.getElementById( LabelDOMElement );
-		this.value = {}
 
-		this.onchange_event = document.createEvent('Event');
-		this.onchange_event.initEvent('slicer_changed', true, false);
+		this.DOMElement.onchange = ()=>{
+			console.log("=> setting slicer value: ", this.DOMElement.value );
+			let valueChangeEvent = new CustomEvent("value_changed", { detail: this.DOMElement.value });
+			this.DOMElement.dispatchEvent( valueChangeEvent );
+		}
 	}
 	
 	set setData( sampleData ) { //This is data to populate the slicer with
@@ -35,10 +37,6 @@ class Slicers extends Event {
 
 	set setIndependentVariable( independentVariable ) {
 		this.independentVariable = independentVariable;
-	}
-
-	set setDependedVariable( columnValue ) {
-		this.dependentVariable = columnValue;
 	}
 
 	// addData( data ) - this is useful for adding data without iterating through all the data points //TODO:
