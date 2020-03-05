@@ -89,7 +89,6 @@ class Graphs {
 				let twoD_axis = data[i][dataKeys[1]];
 				switch(date_loc) {
 					case "1":
-					console.log("CASE 1");
 					twoD_axis = data[i][dataKeys[date_loc]].split('-');
 					v_data.push([oneD_axis, new Date(twoD_axis[0], twoD_axis[1], twoD_axis[2])] );
 					break;
