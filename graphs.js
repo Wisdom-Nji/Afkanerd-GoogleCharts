@@ -2,6 +2,8 @@
 
 
 class Graphs {
+	dataKeys = []
+	dateAt = []
 
 	constructor( DOMLocation, google ) {
 		if( document.getElementById( DOMLocation ) == null ) {
@@ -10,7 +12,6 @@ class Graphs {
 
 		this.DOMLocation = DOMLocation;
 		this.DOMElement = document.getElementById( this.DOMLocation );
-		this.type = ""
 		this.option = {}
 		this.columnCollection = []
 		//Wrapping every data for the graphs in graphData
@@ -20,7 +21,11 @@ class Graphs {
 	}
 
 	addColumn( type, value ) {
-		this.columnCollection.push([type, value]);
+		this.dataKeys.push( value );
+		this.columnCollection.push([type,value]);
+		this.graphData.addColumn( type, value );
+		if(type == "date") 
+			this.dateAt.push( this.dataKeys.length - 1);
 	}
 
 	addSlicer( CL_SLICER ) {
@@ -70,34 +75,23 @@ class Graphs {
 
 	render( data ) {
 		var chart;
-		let dataKeys = []
-		for(let i in this.columnCollection)  {
-			dataKeys.push(this.columnCollection[i][1] );
-			this.graphData.addColumn( this.columnCollection[i][0], this.columnCollection[i][1] );
-		}
-
 		this.graphData.addRows( (()=>{
 			let v_data = []
 			for(let i in data ) {
-				let date_loc = (()=>{
-					for(let j in this.columnCollection) {
-						if(this.columnCollection[j][0] == "date") return j;
-					}
-				})();
-				console.log("=>date_loc:", typeof date_loc);
-				let oneD_axis = data[i][dataKeys[0]];
-				let twoD_axis = data[i][dataKeys[1]];
-				switch(date_loc) {
-					case "1":
-					twoD_axis = data[i][dataKeys[date_loc]].split('-');
-					v_data.push([oneD_axis, new Date(twoD_axis[0], twoD_axis[1], twoD_axis[2])] );
-					break;
-
-					case "0":
-					x_axis = data[i][dataKeys[date_loc]].split('-');
-					v_data.push([new Date(oneD_axis[0], oneD_axis[1], oneD_axis[2]), twoD_axis] );
-					break;
+				let split_date;
+				let oneD_axis = data[i][this.dataKeys[0]];
+				let twoD_axis = data[i][this.dataKeys[1]];
+				// Bad method for checking for dates
+				if(this.dateAt.findIndex(variable=> 0 == variable) != -1){
+					split_date = data[i][this.dataKeys[0]].split('-');
+					oneD_axis = new Date(split_date[0], split_date[1], split_date[2]);
 				}
+				else if( this.dateAt.findIndex(variable=>1 == variable) != -1) {
+					split_date = data[i][this.dataKeys[1]].split('-');
+					twoD_axis = new Date(split_date[0], split_date[1], split_date[2]);
+				}
+
+				v_data.push([oneD_axis, twoD_axis]);
 				console.log("=>x_axis:",oneD_axis)
 				console.log("=>y_axis:",twoD_axis)
 
@@ -105,6 +99,7 @@ class Graphs {
 			console.log(v_data);
 			return v_data;
 		})() );
+		// this.graphData.addRows( [[1000, new Date('2020','01','01')]] )
 		//TODO: if type of data is date, it should be split and turned into date format: new Date(Y, M, D)
 		//TODO: Remember to minus -1 from months cus JS dates begin from 0 = January
 		switch( this.type ) {
@@ -121,11 +116,20 @@ class Graphs {
 		chart.draw(this.graphData, this.options);
 	}
 
+	reset() {
+		this.graphData = new this.google.visualization.DataTable()
+		for(let i in this.columnCollection) {
+			// this.addColumn(this.columnCollection[i][0], this.columnCollection[i][1]);
+			this.graphData.addColumn( this.columnCollection[i][0], this.columnCollection[i][1]);
+		}
+	}
+
 	addSlicer( slicer ) {
 		slicer.DOMElement.addEventListener('value_changed', async ( args )=>{
 			let data = await this.getData(slicer.independentVariable, args.detail );
 			console.log("=> Graphing data:", data);
 
+			this.reset();
 			this.render( data );
 		});
 	}
