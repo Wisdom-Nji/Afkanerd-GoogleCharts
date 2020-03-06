@@ -8,11 +8,12 @@
 	<body>
 		<div id="slicers"><select id="slicers_div" multiple size="4" style="width: 300"></select></div>
 		<div id="slicers"><select id="slicers_div_1" multiple size="4" style="width: 300"></select></div>
+		<hr>
 		<div id="chart_div_BarChart"></div>
 
 		<script>
 		let __VERSION_NAME__ = 'current'
-		let __GRAPH_PACKAGES__ = ['corechart']
+		let __GRAPH_PACKAGES__ = ['corechart', 'bar']
 
 		var sampleData = [
 			{
@@ -40,15 +41,15 @@
 			let graphs = new Graphs('chart_div_BarChart', google);
 			let options = {
 				"height":600,
-				"width":600
+				"width":600,
 			}
 			graphs.setOption( options );
 			graphs.setTitle("Testing framework");
 			graphs.setType("bar");
 
 			graphs.bindData( sampleData );
-			graphs.addColumn( 'number', 'Number');
 			graphs.addColumn( 'date', 'Date');
+			graphs.addColumn( 'number', 'Number');
 			//graphs.render( data );
 
 			// Testing Slicer:1

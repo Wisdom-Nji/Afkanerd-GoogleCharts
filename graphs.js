@@ -17,7 +17,6 @@ class Graphs {
 		//Wrapping every data for the graphs in graphData
 		//DataTable = 2D table = (rows and columns)
 		this.google = google
-		this.graphData = new this.google.visualization.DataTable()
 	}
 
 	addColumn( type, value ) {
@@ -75,7 +74,7 @@ class Graphs {
 
 	render( data ) {
 		var chart;
-		this.graphData.addRows( (()=>{
+		let preparedData = (()=>{
 			let v_data = []
 			for(let i in data ) {
 				let split_date;
@@ -91,20 +90,23 @@ class Graphs {
 					twoD_axis = new Date(split_date[0], split_date[1], split_date[2]);
 				}
 
-				v_data.push([oneD_axis, twoD_axis]);
-				console.log("=>x_axis:",oneD_axis)
-				console.log("=>y_axis:",twoD_axis)
+				// could have an option to choose the third annotation or not
+				v_data.push([oneD_axis, twoD_axis, String(oneD_axis)]);
+				//console.log("=>x_axis:",oneD_axis)
+				//console.log("=>y_axis:",twoD_axis)
 
 			}
 			console.log(v_data);
 			return v_data;
 		})() );
+		this.graphData = new this.google.visualization.arrayToDataTable( preparedData )
 		// this.graphData.addRows( [[1000, new Date('2020','01','01')]] )
 		//TODO: if type of data is date, it should be split and turned into date format: new Date(Y, M, D)
 		//TODO: Remember to minus -1 from months cus JS dates begin from 0 = January
 		switch( this.type ) {
 			case "bar":
-			chart = new this.google.visualization.BarChart( this.DOMElement )	
+			//chart = new this.google.visualization.BarChart( this.DOMElement )	
+			chart = new this.google.charts.Bar( this.DOMElement );
 			//Options can be NULL when passed
 			break;
 
@@ -117,7 +119,7 @@ class Graphs {
 	}
 
 	reset() {
-		this.graphData = new this.google.visualization.DataTable()
+		this.graphData = newDataGraph();
 		for(let i in this.columnCollection) {
 			// this.addColumn(this.columnCollection[i][0], this.columnCollection[i][1]);
 			this.graphData.addColumn( this.columnCollection[i][0], this.columnCollection[i][1]);
