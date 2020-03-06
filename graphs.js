@@ -18,6 +18,7 @@ class Graphs {
 		//DataTable = 2D table = (rows and columns)
 		this.google = google
 		this.columns = columns;
+		this.graphData = this.google.visualization;
 	}
 
 	addColumn( type, value ) {
@@ -75,15 +76,18 @@ class Graphs {
 
 	render( data ) {
 		var chart;
+
 		let preparedData = (()=>{
 			//Some sanitation check of column
-			let v_data = [ this.columns[0][1], this.columns[1][1], { role: 'annotation' } ]
+			let v_data = [ [this.columns[0][1], this.columns[1][1], { role: 'annotation' }] ]
 			for(let i in data ) {
 				let split_date;
-				let oneD_axis = data[i][this.dataKeys[0]];
-				let twoD_axis = data[i][this.dataKeys[1]];
+				let oneD_axis = this.columns[0].findIndex(variable => 'date' == variable ) == -1 ? data[i][this.columns[0][1]] : new Date(data[i][this.columns[0][1]])
+				let twoD_axis = this.columns[1].findIndex(variable => 'date' == variable ) == -1 ? data[i][this.columns[1][1]] : new Date(data[i][this.columns[1][1]])
+
 				// Bad method for checking for dates
-				if(this.dateAt.findIndex(variable=> 0 == variable) != -1){
+				/*
+				if(this.column.findIndex(variable=> 0 == variable) != -1){
 					split_date = data[i][this.dataKeys[0]].split('-');
 					oneD_axis = new Date(split_date[0], split_date[1], split_date[2]);
 				}
@@ -91,6 +95,7 @@ class Graphs {
 					split_date = data[i][this.dataKeys[1]].split('-');
 					twoD_axis = new Date(split_date[0], split_date[1], split_date[2]);
 				}
+				*/
 
 				// could have an option to choose the third annotation or not
 				// option to choose whether to use oneD_axis or twoD_axis
@@ -101,17 +106,19 @@ class Graphs {
 			}
 			console.log(v_data);
 			return v_data;
-		})() );
-		this.graphData = new this.google.visualization.arrayToDataTable( preparedData )
-		for(let i in this.columns ) 
-			this.addColumn( this.columns[i][0], this.columns[i][1] );
+		})();
+
+		this.graphData = new this.google.visualization.arrayToDataTable( preparedData );
+		//for(let i in this.columns ) 
+			//this.addColumn( this.columns[i][0], this.columns[i][1] );
 		// this.graphData.addRows( [[1000, new Date('2020','01','01')]] )
 		//TODO: if type of data is date, it should be split and turned into date format: new Date(Y, M, D)
 		//TODO: Remember to minus -1 from months cus JS dates begin from 0 = January
 		switch( this.type ) {
 			case "bar":
 			//chart = new this.google.visualization.BarChart( this.DOMElement )	
-			chart = new this.google.charts.Bar( this.DOMElement );
+			//chart = new this.google.charts.Bar( this.DOMElement );
+			chart = new this.google.visualization.ColumnChart( this.DOMElement )	
 			//Options can be NULL when passed
 			break;
 
@@ -137,7 +144,7 @@ class Graphs {
 			console.log("=> Graphing data:", data);
 
 			//this.reset();
-			this.render( data, this.columns );
+			this.render( data );
 		});
 	}
 
