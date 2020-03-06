@@ -46,17 +46,6 @@
 			graphs.setTitle("Testing framework");
 			graphs.setType("bar");
 
-			/*
-			let data = (()=>{
-				let v_data = []
-				for( let i in sampleData ) {
-					let s_date = sampleData[i]['Date'].split('-');
-					v_data.push( [sampleData[i]['Number'], new Date(s_date[0], s_date[1], s_date[2])] )
-				}
-				return v_data;
-			})()
-			*/
-			
 			graphs.bindData( sampleData );
 			graphs.addColumn( 'number', 'Number');
 			graphs.addColumn( 'date', 'Date');
@@ -68,13 +57,6 @@
 			slicers.setData = sampleData;
 			graphs.addSlicer( slicers );
 
-			// Testing Slicer:2
-			/*
-			let slicers_1 = new Slicers('slicers_div_1');
-			slicers_1.setIndependentVariable = 'Site';
-			slicers_1.setData = sampleData;
-			graphs.addSlicer( slicers_1 );
-			*/
 		})
 
 		</script>
