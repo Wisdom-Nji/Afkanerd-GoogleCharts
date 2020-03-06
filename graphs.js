@@ -5,7 +5,7 @@ class Graphs {
 	dataKeys = []
 	dateAt = []
 
-	constructor( DOMLocation, google ) {
+	constructor( DOMLocation, columns, google ) {
 		if( document.getElementById( DOMLocation ) == null ) {
 			console.error("=> DOMLocation is not a valid path");
 		}
@@ -17,6 +17,7 @@ class Graphs {
 		//Wrapping every data for the graphs in graphData
 		//DataTable = 2D table = (rows and columns)
 		this.google = google
+		this.columns = columns;
 	}
 
 	addColumn( type, value ) {
@@ -75,7 +76,8 @@ class Graphs {
 	render( data ) {
 		var chart;
 		let preparedData = (()=>{
-			let v_data = []
+			//Some sanitation check of column
+			let v_data = [ this.columns[0][1], this.columns[1][1], { role: 'annotation' } ]
 			for(let i in data ) {
 				let split_date;
 				let oneD_axis = data[i][this.dataKeys[0]];
@@ -91,6 +93,7 @@ class Graphs {
 				}
 
 				// could have an option to choose the third annotation or not
+				// option to choose whether to use oneD_axis or twoD_axis
 				v_data.push([oneD_axis, twoD_axis, String(oneD_axis)]);
 				//console.log("=>x_axis:",oneD_axis)
 				//console.log("=>y_axis:",twoD_axis)
@@ -100,6 +103,8 @@ class Graphs {
 			return v_data;
 		})() );
 		this.graphData = new this.google.visualization.arrayToDataTable( preparedData )
+		for(let i in this.columns ) 
+			this.addColumn( this.columns[i][0], this.columns[i][1] );
 		// this.graphData.addRows( [[1000, new Date('2020','01','01')]] )
 		//TODO: if type of data is date, it should be split and turned into date format: new Date(Y, M, D)
 		//TODO: Remember to minus -1 from months cus JS dates begin from 0 = January
@@ -131,8 +136,8 @@ class Graphs {
 			let data = await this.getData(slicer.independentVariable, args.detail );
 			console.log("=> Graphing data:", data);
 
-			this.reset();
-			this.render( data );
+			//this.reset();
+			this.render( data, this.columns );
 		});
 	}
 

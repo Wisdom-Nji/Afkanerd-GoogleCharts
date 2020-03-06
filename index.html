@@ -38,6 +38,7 @@
 
 		google.charts.load(__VERSION_NAME__, {packages: __GRAPH_PACKAGES__});
 		google.charts.setOnLoadCallback(function() {
+			let columns = [['date', 'Date'], ['number', 'Number']];
 			let graphs = new Graphs('chart_div_BarChart', google);
 			let options = {
 				"height":600,
@@ -48,8 +49,8 @@
 			graphs.setType("bar");
 
 			graphs.bindData( sampleData );
-			graphs.addColumn( 'date', 'Date');
-			graphs.addColumn( 'number', 'Number');
+			//graphs.addColumn( 'date', 'Date');
+			//graphs.addColumn( 'number', 'Number');
 			//graphs.render( data );
 
 			// Testing Slicer:1
