@@ -24,16 +24,22 @@ class Slicers extends Event {
 		}
 	}
 
-	render( data ) {
+	render( data, label ) {
 		if(typeof data == "undefined" || data === null) data = this.data;
 		var i = 0;
 		let optgroup = document.createElement("optgroup");
-		optgroup.label = 'sample label' //TODO:
+		optgroup.label = typeof label == "undefined" ? "sample label" : label //TODO:
 
 		for(;i<data.length;i++) {
 			let option = new Option(data[i], data[i] );
 			optgroup.appendChild(option);
 		}
+
+		// This should empty the render slicer, but id doesn't
+		// console.warn("=> Destorying slicer element");
+		
+		// This method is quite slow and should have a faster method of chaning the values of the content
+		this.DOMElement.innerHTML = "";
 		this.DOMElement.appendChild( optgroup );
 	}
 	
@@ -63,7 +69,7 @@ class Slicers extends Event {
 			let v_data = []
 			for(let i in this.boundData )
 				if(values.findIndex( variables => this.boundData[i][independentVariable] == variables ) != -1 ) 
-					v_data.push( this.boundData[i] );
+					v_data.push( this.boundData[i][this.independentVariable] );
 			
 			resolve(v_data);
 		});
@@ -76,7 +82,7 @@ class Slicers extends Event {
 			console.log("=> Slicing data:", data);
 
 			//this.reset();
-			this.render( data );
+			this.render( data, args.details );
 		});
 	}
 }
