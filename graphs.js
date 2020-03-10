@@ -14,6 +14,7 @@ class Graphs {
 		this.DOMElement = document.getElementById( this.DOMLocation );
 		this.option = {}
 		this.columnCollection = []
+
 		//Wrapping every data for the graphs in graphData
 		//DataTable = 2D table = (rows and columns)
 		this.google = google
@@ -89,17 +90,6 @@ class Graphs {
 				let oneD_axis = this.columns[0].findIndex(variable => 'date' == variable ) == -1 ? data[i][this.columns[0][1]] : new Date(data[i][this.columns[0][1]])
 				let twoD_axis = this.columns[1].findIndex(variable => 'date' == variable ) == -1 ? data[i][this.columns[1][1]] : new Date(data[i][this.columns[1][1]])
 
-				// Bad method for checking for dates
-				/*
-				if(this.column.findIndex(variable=> 0 == variable) != -1){
-					split_date = data[i][this.dataKeys[0]].split('-');
-					oneD_axis = new Date(split_date[0], split_date[1], split_date[2]);
-				}
-				else if( this.dateAt.findIndex(variable=>1 == variable) != -1) {
-					split_date = data[i][this.dataKeys[1]].split('-');
-					twoD_axis = new Date(split_date[0], split_date[1], split_date[2]);
-				}
-				*/
 
 				// could have an option to choose the third annotation or not
 				// option to choose whether to use oneD_axis or twoD_axis
@@ -116,11 +106,7 @@ class Graphs {
 		})();
 
 		this.graphData = new this.google.visualization.arrayToDataTable( preparedData );
-		//for(let i in this.columns ) 
-			//this.addColumn( this.columns[i][0], this.columns[i][1] );
-		// this.graphData.addRows( [[1000, new Date('2020','01','01')]] )
-		//TODO: if type of data is date, it should be split and turned into date format: new Date(Y, M, D)
-		//TODO: Remember to minus -1 from months cus JS dates begin from 0 = January
+
 		switch( this.type ) {
 			case "bar":
 			//chart = new this.google.visualization.BarChart( this.DOMElement )	
