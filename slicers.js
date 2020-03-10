@@ -25,7 +25,7 @@ class Slicers extends Event {
 	}
 
 	render( data ) {
-		if(typeof data == "undefined" ) data = this.data;
+		if(typeof data == "undefined" || data === null) data = this.data;
 		var i = 0;
 		let optgroup = document.createElement("optgroup");
 		optgroup.label = 'sample label' //TODO:
@@ -54,12 +54,16 @@ class Slicers extends Event {
 
 	// addData( data ) - this is useful for adding data without iterating through all the data points //TODO:
 
+	bindData( data ) {
+		this.boundData = data;
+	}
+
 	getData( independentVariable, values ) {
 		return new Promise( (resolve, reject)=> {
 			let v_data = []
-			for(let i in this.data )
-				if(values.findIndex( variables => this.data[i][independentVariable] == variables ) != -1 ) 
-					v_data.push( this.data[i] );
+			for(let i in this.boundData )
+				if(values.findIndex( variables => this.boundData[i][independentVariable] == variables ) != -1 ) 
+					v_data.push( this.boundData[i] );
 			
 			resolve(v_data);
 		});

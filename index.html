@@ -48,7 +48,6 @@
 			graphs.setTitle("Testing framework");
 			graphs.setType("bar");
 			graphs.setLabel = 'Number'
-
 			graphs.bindData( sampleData );
 
 			// Testing Slicer:1
@@ -60,7 +59,8 @@
 
 			let slicers_site = new Slicers('slicers_div_1');
 			slicers_site.setIndependentVariable = 'Site';
-			slicers_site.setData = sampleData;
+			// slicers_site.setData = sampleData;
+			slicers_site.bindData( sampleData );
 			slicers_site.listenToSlicer( slicers );
 		})
 
