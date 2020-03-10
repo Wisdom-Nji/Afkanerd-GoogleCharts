@@ -8,7 +8,7 @@ class Slicers extends Event {
 		this.DOMElement = document.getElementById( LabelDOMElement );
 
 		this.DOMElement.onchange = ()=>{
-			//console.log("=> setting slicer value: ", this.DOMElement.value );
+			// console.log("=> setting slicer value: ", this.DOMElement.value );
 			let data = (()=> {
 				let v_data = []
 				for(let i in this.DOMElement.options) {
@@ -25,6 +25,7 @@ class Slicers extends Event {
 	}
 
 	render( data ) {
+		if(typeof data == "undefined" ) data = this.data;
 		var i = 0;
 		let optgroup = document.createElement("optgroup");
 		optgroup.label = 'sample label' //TODO:
