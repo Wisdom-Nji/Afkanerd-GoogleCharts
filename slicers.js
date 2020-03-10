@@ -24,13 +24,13 @@ class Slicers extends Event {
 		}
 	}
 
-	render() {
+	render( data ) {
 		var i = 0;
 		let optgroup = document.createElement("optgroup");
 		optgroup.label = 'sample label' //TODO:
 
 		for(;i<data.length;i++) {
-			let option = new Option(this.data[i], this.data[i] );
+			let option = new Option(data[i], data[i] );
 			optgroup.appendChild(option);
 		}
 		this.DOMElement.appendChild( optgroup );
@@ -53,9 +53,25 @@ class Slicers extends Event {
 
 	// addData( data ) - this is useful for adding data without iterating through all the data points //TODO:
 
+	getData( independentVariable, values ) {
+		return new Promise( (resolve, reject)=> {
+			let v_data = []
+			for(let i in this.data )
+				if(values.findIndex( variables => this.data[i][independentVariable] == variables ) != -1 ) 
+					v_data.push( this.data[i] );
+			
+			resolve(v_data);
+		});
+
+	}
+
 	listenToSlicer( slicer ) {
 		slicer.DOMElement.addEventListener('value_changed', async (args)=>{
-				
+			let data = await this.getData(slicer.independentVariable, args.detail );
+			console.log("=> Slicing data:", data);
+
+			//this.reset();
+			this.render( data );
 		});
 	}
 }
