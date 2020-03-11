@@ -83,16 +83,11 @@ class Graphs {
 		var chart;
 
 		let preparedData = (()=>{
-			//Some sanitation check of column
 			let v_data = typeof this.label != "undefined" ? [[this.columns[0][1], this.columns[1][1], { role: 'annotation' }] ] : [ [this.columns[0][1], this.columns[1][1]] ]
 			for(let i in data ) {
-				let split_date;
 				let oneD_axis = this.columns[0].findIndex(variable => 'date' == variable ) == -1 ? data[i][this.columns[0][1]] : new Date(data[i][this.columns[0][1]])
 				let twoD_axis = this.columns[1].findIndex(variable => 'date' == variable ) == -1 ? data[i][this.columns[1][1]] : new Date(data[i][this.columns[1][1]])
 
-
-				// could have an option to choose the third annotation or not
-				// option to choose whether to use oneD_axis or twoD_axis
 				if( typeof this.label != "undefined" ) 
 					v_data.push([oneD_axis, twoD_axis, data[i][this.label]] );
 				else
