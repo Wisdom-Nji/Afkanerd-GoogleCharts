@@ -69,7 +69,7 @@ class Slicers extends Event {
 		return new Promise( (resolve, reject)=> {
 			let v_data = []
 			for(let i in this.boundData )
-				if(values.findIndex( variables => this.boundData[i][independentVariable] == variables ) != -1 && v_data.findIndex( variables => this.boundData[i][independentVariable] == variables ) == -1) 
+				if(values.findIndex( variables => this.boundData[i][independentVariable] == variables ) != -1 && v_data.findIndex( variables => this.boundData[i][this.independentVariable] == variables ) == -1) 
 					v_data.push( this.boundData[i][this.independentVariable] );
 			
 			resolve(v_data);
