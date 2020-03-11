@@ -123,14 +123,6 @@ class Graphs {
 		chart.draw(this.graphData, this.options);
 	}
 
-	reset() {
-		this.graphData = newDataGraph();
-		for(let i in this.columnCollection) {
-			// this.addColumn(this.columnCollection[i][0], this.columnCollection[i][1]);
-			this.graphData.addColumn( this.columnCollection[i][0], this.columnCollection[i][1]);
-		}
-	}
-
 	addSlicer( slicer ) {
 		slicer.DOMElement.addEventListener('value_changed', async ( args )=>{
 			let data = await this.getData(slicer.independentVariable, args.detail );
