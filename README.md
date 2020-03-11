@@ -5,8 +5,11 @@ Afkanerd's reimplementation of Google Graphs
 - slicers are dynamically available from data entered\
 `slicer = new slicers( DOM.element )`\
 `slicer.setData = [array]`\
-`slicer.addEventListeners( object )`\
-`slicer.addEmittingEvents( object )`
+`slicer.render( object, string )`\
+`slicer.setIndependentVariable( string )`\
+`slicer.bindData( object )`\
+`slicer.getData( object )`\
+`slicer.listenToSlicer( Object Slicer )`
 
 - graphs\
 `graph = new graph( DOM.element, columns, googleCharts )`\
