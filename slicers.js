@@ -22,6 +22,7 @@ class Slicers extends Event {
 			let valueChangeEvent = new CustomEvent("value_changed", { detail: data })
 			this.DOMElement.dispatchEvent( valueChangeEvent );
 		}
+
 	}
 
 	render( data, label ) {
