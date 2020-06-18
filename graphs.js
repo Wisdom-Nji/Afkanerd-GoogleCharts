@@ -87,6 +87,8 @@ class Graphs {
 		let preparedData = (()=>{
 			let v_data = typeof this.label != "undefined" ? [[this.columns[0][1], this.columns[1][1], { role: 'annotation' }] ] : [ [this.columns[0][1], this.columns[1][1]] ]
 			for(let i in data ) {
+				// this.columns[0][1]
+				// this.columns[x][y] [x,y0,y1,y2,y3]
 				let oneD_axis = this.columns[0].findIndex(variable => 'date' == variable ) == -1 ? data[i][this.columns[0][1]] : new Date(data[i][this.columns[0][1]])
 				let twoD_axis = this.columns[1].findIndex(variable => 'date' == variable ) == -1 ? data[i][this.columns[1][1]] : new Date(data[i][this.columns[1][1]])
 
