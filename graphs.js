@@ -82,6 +82,8 @@ class Graphs {
 	render( data ) {
 		var chart;
 
+		// This works for only 2D data
+		// Dynamic enough to change Dimensions would be intended target
 		let preparedData = (()=>{
 			let v_data = typeof this.label != "undefined" ? [[this.columns[0][1], this.columns[1][1], { role: 'annotation' }] ] : [ [this.columns[0][1], this.columns[1][1]] ]
 			for(let i in data ) {
@@ -96,14 +98,16 @@ class Graphs {
 				//console.log("=>y_axis:",twoD_axis)
 
 			}
-			console.log(v_data);
+			// console.log(v_data);
 			return v_data;
 		})();
+
+		console.log( "Prepared Data: ", preparedData )
 
 		this.graphData = new this.google.visualization.arrayToDataTable( preparedData );
 
 		switch( this.type ) {
-			case "bar":
+			case "column":
 			//chart = new this.google.visualization.BarChart( this.DOMElement )	
 			//chart = new this.google.charts.Bar( this.DOMElement );
 			chart = new this.google.visualization.ColumnChart( this.DOMElement )	

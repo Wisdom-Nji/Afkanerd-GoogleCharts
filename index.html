@@ -44,15 +44,22 @@
 
 		google.charts.load(__VERSION_NAME__, {packages: __GRAPH_PACKAGES__});
 		google.charts.setOnLoadCallback(function() {
-			let columns = [['date', 'Date'], ['number', 'Number']];
+			let columns = [
+				['date', 'Date'], 
+				['number', 'Number']
+			];
 			let graphs = new Graphs('chart_div_BarChart', columns, google);
 			let options = {
 				"height":600,
 				"width":600,
+				series : {
+					0: { targetAxisIndex: 0 },
+					1: { targetAxisIndex: 1}
+				}
 			}
 			graphs.setOption( options );
 			graphs.setTitle("Testing framework");
-			graphs.setType("bar");
+			graphs.setType("column");
 			graphs.setLabel = 'Number'
 			graphs.bindData( sampleData );
 
