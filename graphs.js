@@ -85,8 +85,17 @@ class Graphs {
 		// This works for only 2D data
 		// Dynamic enough to change Dimensions would be intended target
 		let preparedData = (()=>{
-			let v_data = typeof this.label != "undefined" ? [[this.columns[0][1], this.columns[1][1], { role: 'annotation' }] ] : [ [this.columns[0][1], this.columns[1][1]] ]
+			// let v_data = typeof this.label != "undefined" ? [[this.columns[0][1], this.columns[1][1], { role: 'annotation' }] ] : [ [this.columns[0][1], this.columns[1][1]] ]
+
+			let v_data = [[]]
+			// Columns number determines the number Dimensions = this.columns
+			for(let i in this.columns) 
+				v_data[0].push( this.columns[i][1] )
+			if( typeof this.label != "undefined" )
+				v_data[0].push( { role: 'annotation' } )
+
 			for(let i in data ) {
+				/*(
 				// this.columns[0][1]
 				// this.columns[x][y] [x,y0,y1,y2,y3]
 				let oneD_axis = this.columns[0].findIndex(variable => 'date' == variable ) == -1 ? data[i][this.columns[0][1]] : new Date(data[i][this.columns[0][1]])
@@ -98,7 +107,18 @@ class Graphs {
 					v_data.push([oneD_axis, twoD_axis]);
 				//console.log("=>x_axis:",oneD_axis)
 				//console.log("=>y_axis:",twoD_axis)
+				*/
 
+				let dataRow = []
+				for(let j in this.columns ) {
+					let axis = this.columns[j].findIndex(variable => 'date' == variable ) == -1 ? data[i][this.columns[j][1]] : new Date( data[i][this.columns[j][1]] )
+					dataRow.push( axis )
+				}
+				
+				if( typeof this.label != "undefined" ) 
+					dataRow.push( data[i][this.label] )
+
+				v_data.push( dataRow )
 			}
 			// console.log(v_data);
 			return v_data;
