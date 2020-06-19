@@ -48,7 +48,7 @@ class Graphs {
 		this.option.width = width;
 	}
 
-	setType( type ) {
+	set setType( type ) {
 		this.type = type;
 	}
 
@@ -82,6 +82,10 @@ class Graphs {
 
 	set setLabel( label ) {
 		this.label = label;
+	}
+
+	set setUnifiedColumn( un_column ) {
+		this.unifiedColumn = un_column
 	}
 
 	render( data ) {
@@ -137,9 +141,21 @@ class Graphs {
 			return v_data;
 		})();
 
-		console.log( "Prepared Data: ", preparedData )
+
+		// get all matching unique values
+		let u_values = (()=>{
+			let u_set = new Set()
+			for( let i in data )  {
+				u_set.add( data[i][this.unifiedColumn])
+			}
+			let u_array = Array.from(u_set)
+			// return Array.from(u_set)
+		})()
+		console.log("Unique values", u_values)
+		// console.log( "Prepared Data: ", preparedData )
 
 		this.graphData = new this.google.visualization.arrayToDataTable( preparedData );
+		console.log("Graph Data: ", this.graphData )
 		// let view = new this.google.visualization.DataView( this.graphData )
 		// view.setColumns(this.columnDetails);
 
