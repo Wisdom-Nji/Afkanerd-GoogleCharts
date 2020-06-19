@@ -4,6 +4,7 @@
 class Graphs {
 	dataKeys = []
 	dateAt = []
+	labels = false
 
 	constructor( DOMLocation, columns, google ) {
 		if( document.getElementById( DOMLocation ) == null ) {
@@ -20,6 +21,10 @@ class Graphs {
 		this.google = google
 		this.columns = columns;
 		this.graphData = this.google.visualization;
+	}
+
+	set setColumns( columnDetails ) {
+		this.columnDetails = columnDetails
 	}
 
 	addColumn( type, value ) {
@@ -89,10 +94,11 @@ class Graphs {
 
 			let v_data = [[]]
 			// Columns number determines the number Dimensions = this.columns
-			for(let i in this.columns) 
+			for(let i in this.columns) {
 				v_data[0].push( this.columns[i][1] )
-			if( typeof this.label != "undefined" )
-				v_data[0].push( { role: 'annotation' } )
+				if( this.label == true && i > 0)
+					v_data[0].push( { role: 'annotation' } )
+			}
 
 			for(let i in data ) {
 				/*(
@@ -113,13 +119,20 @@ class Graphs {
 				for(let j in this.columns ) {
 					let axis = this.columns[j].findIndex(variable => 'date' == variable ) == -1 ? data[i][this.columns[j][1]] : new Date( data[i][this.columns[j][1]] )
 					dataRow.push( axis )
+
+					if( this.label == true && j > 0) {
+						dataRow.push( String(data[i][this.columns[j][1]]) )
+					}
 				}
 				
+				/*
 				if( typeof this.label != "undefined" ) 
 					dataRow.push( data[i][this.label] )
+				*/
 
 				v_data.push( dataRow )
 			}
+
 			// console.log(v_data);
 			return v_data;
 		})();
@@ -127,6 +140,8 @@ class Graphs {
 		console.log( "Prepared Data: ", preparedData )
 
 		this.graphData = new this.google.visualization.arrayToDataTable( preparedData );
+		// let view = new this.google.visualization.DataView( this.graphData )
+		// view.setColumns(this.columnDetails);
 
 		switch( this.type ) {
 			case "column":
@@ -142,6 +157,7 @@ class Graphs {
 			break;
 		}
 		chart.draw(this.graphData, this.options);
+		// chart.draw(view, this.options);
 	}
 
 	addSlicer( slicer ) {

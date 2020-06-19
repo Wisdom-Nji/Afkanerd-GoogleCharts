@@ -60,6 +60,7 @@ class Slicers extends Event {
 		this.independentVariable = independentVariable;
 	}
 
+
 	// addData( data ) - this is useful for adding data without iterating through all the data points //TODO:
 
 	bindData( data ) {

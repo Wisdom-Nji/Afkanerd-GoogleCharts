@@ -50,21 +50,34 @@
 		google.charts.setOnLoadCallback(function() {
 			let columns = [
 				['date', 'Date'], 
-				['number', 'Number1']
+				['number', 'Number1'],
+				['number', 'Number2']
 			];
 			let graphs = new Graphs('chart_div_BarChart', columns, google);
 			let options = {
 				"height":600,
 				"width":600,
-				series : {
-					0: { targetAxisIndex: 0 },
-					1: { targetAxisIndex: 1}
-				}
 			}
 			graphs.setOption( options );
 			graphs.setTitle("Testing framework");
 			graphs.setType("column");
-			graphs.setLabel = 'Number1'
+			graphs.setLabel = true
+
+			/*
+			// This is an advanced method of specifying the options
+			graphs.setColumns = [0,
+				1,{
+				calc: "stringify",
+				sourceColumn: 1,
+				type: "string",
+				role: "annotation"},
+				2,{
+				calc: "stringify",
+				sourceColumn: 2,
+				type: "string",
+				role: "annotation"}]
+			*/
+
 			graphs.bindData( sampleData );
 
 			// Testing Slicer:1
