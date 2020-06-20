@@ -102,8 +102,8 @@ class Graphs {
 				console.log("column: " + this.columns[i][0])
 				if( this.columns[i][0] == 'style' ) 
 					v_data[0].push( {role: 'style'})
-				else if( this.columns[i][0] == 'annotation')
-					v_data[0].push( { role: 'annotation' } )
+				else if( this.columns[i][0] == 'annotation') continue
+					//v_data[0].push( { role: 'annotation' } )
 				else v_data[0].push( this.columns[i][1] )
 			}
 			// console.log("v_data", v_data)
@@ -125,6 +125,7 @@ class Graphs {
 
 				let dataRow = []
 				for(let j in this.columns ) {
+					if( this.columns[j][0] == 'annotation') continue
 					if( this.columns[j][0] == 'style') {
 						// console.log("Pushing: " + this.columns[j][1])
 						dataRow.push( this.columns[j][1] )
@@ -150,8 +151,23 @@ class Graphs {
 
 		this.graphData = new this.google.visualization.arrayToDataTable( preparedData );
 		// console.log("Graph Data: ", this.graphData )
-		// let view = new this.google.visualization.DataView( this.graphData )
-		// view.setColumns(this.columnDetails);
+		let view = new this.google.visualization.DataView( this.graphData )
+		let columnDetails = (()=>{
+			let loc = 0
+			let v_data = []
+			for(let i in this.columns) {
+				// if( this.columns[i][0] == 'style' ) continue
+				if( this.columns[i][0] == 'annotation' ) {
+					v_data.push(this.columns[i][1])
+					continue
+				}
+				v_data.push(loc)
+				++loc
+			}
+			return v_data
+		})()
+		console.log("columnDetails", columnDetails)
+		view.setColumns(columnDetails);
 
 		switch( this.type ) {
 			case "column":
@@ -166,9 +182,9 @@ class Graphs {
 			//Options can be NULL when passed
 			break;
 		}
-		chart.draw(this.graphData, this.option);
+		// chart.draw(this.graphData, this.option);
 		// console.log(this.option)
-		// chart.draw(view, this.option);
+		chart.draw(view, this.option);
 	}
 
 	unify( data ) {
