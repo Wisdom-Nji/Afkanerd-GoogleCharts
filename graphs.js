@@ -141,13 +141,10 @@ class Graphs {
 			return v_data;
 		})();
 
-
-		// console.log( "Prepared Data: ", preparedData )
-
 		this.graphData = new this.google.visualization.arrayToDataTable( preparedData );
-		console.log("Graph Data: ", this.graphData )
-		// let view = new this.google.visualization.DataView( this.graphData )
-		// view.setColumns(this.columnDetails);
+		// console.log("Graph Data: ", this.graphData )
+		let view = new this.google.visualization.DataView( this.graphData )
+		view.setColumns(this.columnDetails);
 
 		switch( this.type ) {
 			case "column":
@@ -162,8 +159,8 @@ class Graphs {
 			//Options can be NULL when passed
 			break;
 		}
-		chart.draw(this.graphData, this.options);
-		// chart.draw(view, this.options);
+		// chart.draw(this.graphData, this.option);
+		chart.draw(view, this.options);
 	}
 
 	unify( data ) {
@@ -192,11 +189,6 @@ class Graphs {
 				}
 				structure.push(computedData)
 			}				
-
-			/*
-			for( let j = 1; j < computedData.length; ++j )
-				subcategory[this.columns[j][1]] = computedData[this.columns[j][1]]
-			*/
 		}
 		return structure
 	}
