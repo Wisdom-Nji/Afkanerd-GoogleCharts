@@ -149,7 +149,7 @@ class Graphs {
 				u_set.add( data[i][this.unifiedColumn])
 			}
 			let u_array = Array.from(u_set)
-			// return Array.from(u_set)
+			return Array.from(u_set)
 		})()
 		console.log("Unique values", u_values)
 		// console.log( "Prepared Data: ", preparedData )
