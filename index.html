@@ -51,32 +51,42 @@
 			let columns = [
 				['date', 'Date'], 
 				['number', 'Number1'],
-				['number', 'Number2']
+				['annotation',  {calc:"stringify",sourceColumn:1,type:"string",role:"annotation"}],
+				['number', 'Number2'],
+				['style', 'black'],
+				['annotation',  {calc:"stringify",sourceColumn:2,type:"string",role:"annotation"}]
 			];
 			let graphs = new Graphs('chart_div_BarChart', columns, google);
 			let options = {
-				"height":600,
-				"width":600,
+				"height": 300,
+				"width": 800,
+				legend: {
+					"position" : "top",
+					"alignment" : "start"
+				}
 			}
 			graphs.setOption( options );
 			graphs.setTitle("Testing framework");
 			graphs.setType = "column"
-			graphs.setLabel = true
+			// graphs.setLabel = true
 			graphs.setUnifiedColumn = 'Date'
 
-			/*
+			
 			// This is an advanced method of specifying the options
+			/*
 			graphs.setColumns = [0,
 				1,{
-				calc: "stringify",
-				sourceColumn: 1,
-				type: "string",
-				role: "annotation"},
+					calc: "stringify",
+					sourceColumn: 1,
+					type: "string",
+					role: "annotation"
+				},
 				2,{
-				calc: "stringify",
-				sourceColumn: 2,
-				type: "string",
-				role: "annotation"}]
+					calc: "stringify",
+					sourceColumn: 2,
+					type: "string",
+					role: "annotation"
+				}]
 			*/
 
 			graphs.bindData( sampleData );

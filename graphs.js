@@ -99,10 +99,14 @@ class Graphs {
 			let v_data = [[]]
 			// Columns number determines the number Dimensions = this.columns
 			for(let i in this.columns) {
-				v_data[0].push( this.columns[i][1] )
-				if( this.label == true && i > 0)
+				console.log("column: " + this.columns[i][0])
+				if( this.columns[i][0] == 'style' ) 
+					v_data[0].push( {role: 'style'})
+				else if( this.columns[i][0] == 'annotation')
 					v_data[0].push( { role: 'annotation' } )
+				else v_data[0].push( this.columns[i][1] )
 			}
+			// console.log("v_data", v_data)
 
 			for(let i in data ) {
 				/*(
@@ -121,12 +125,15 @@ class Graphs {
 
 				let dataRow = []
 				for(let j in this.columns ) {
+					if( this.columns[j][0] == 'style') {
+						// console.log("Pushing: " + this.columns[j][1])
+						dataRow.push( this.columns[j][1] )
+						continue
+					}
 					let axis = this.columns[j].findIndex(variable => 'date' == variable ) == -1 ? data[i][this.columns[j][1]] : new Date( data[i][this.columns[j][1]] )
+					// console.log("Pushing: " + axis)
 					dataRow.push( axis )
 
-					if( this.label == true && j > 0) {
-						dataRow.push( String(data[i][this.columns[j][1]]) )
-					}
 				}
 				
 				/*
@@ -137,25 +144,12 @@ class Graphs {
 				v_data.push( dataRow )
 			}
 
-			// console.log(v_data);
+			console.log(v_data);
 			return v_data;
 		})();
 
-
-		// get all matching unique values
-		let u_values = (()=>{
-			let u_set = new Set()
-			for( let i in data )  {
-				u_set.add( data[i][this.unifiedColumn])
-			}
-			let u_array = Array.from(u_set)
-			return Array.from(u_set)
-		})()
-		console.log("Unique values", u_values)
-		// console.log( "Prepared Data: ", preparedData )
-
 		this.graphData = new this.google.visualization.arrayToDataTable( preparedData );
-		console.log("Graph Data: ", this.graphData )
+		// console.log("Graph Data: ", this.graphData )
 		// let view = new this.google.visualization.DataView( this.graphData )
 		// view.setColumns(this.columnDetails);
 
@@ -172,13 +166,45 @@ class Graphs {
 			//Options can be NULL when passed
 			break;
 		}
-		chart.draw(this.graphData, this.options);
-		// chart.draw(view, this.options);
+		chart.draw(this.graphData, this.option);
+		// console.log(this.option)
+		// chart.draw(view, this.option);
+	}
+
+	unify( data ) {
+		// get data of same category
+		let category = new Set()
+		for( let i in data )
+			category.add( data[i][this.columns[0][1]] )
+
+		let structure = []
+		category = Array.from( category )
+
+		for( let i in category ) {
+			let computedData = {}
+			computedData[this.columns[0][1]] = category[i]
+			for( let k in data ) {
+				let data_unique_value = data[k][this.columns[0][1]]
+				// console.log("unique_data_value: " + data_unique_value)
+				// console.log("unique_category  : " + category[i])
+				if( data_unique_value == category[i] ) {
+					for( let j = 1; j< this.columns.length; ++j ) {
+						computedData[this.columns[j][1]] = 
+						Object.keys(computedData).indexOf(this.columns[j][1]) < 0 ?
+						Number(data[k][this.columns[j][1]]):
+						Number(computedData[this.columns[j][1]]) + Number(data[k][this.columns[j][1]])
+					}
+				}
+				structure.push(computedData)
+			}				
+		}
+		return structure
 	}
 
 	addSlicer( slicer ) {
 		slicer.DOMElement.addEventListener('value_changed', async ( args )=>{
 			let data = await this.getData(slicer.independentVariable, args.detail );
+			data = this.unify(data)
 			console.log("=> Graphing data:", data);
 
 			//this.reset();
