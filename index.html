@@ -58,11 +58,22 @@
 			];
 			let graphs = new Graphs('chart_div_BarChart', columns, google);
 			let options = {
+				"title": "# people: registered/ any outcome in app",
 				"height": 300,
 				"width": 800,
 				legend: {
-					"position" : "top",
-					"alignment" : "start"
+					position : "top",
+					alignment : "start"
+				},
+				animation: {
+					duration: 1000,
+					easing: 'in'
+				},
+				series: {
+					1: {
+						color: 'green',
+						visibleInLegend: true
+					}
 				}
 			}
 			graphs.setOption( options );
