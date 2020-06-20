@@ -53,7 +53,7 @@
 				['number', 'Number1'],
 				['annotation',  {calc:"stringify",sourceColumn:1,type:"string",role:"annotation"}],
 				['number', 'Number2'],
-				['style', 'black'],
+				// ['style', 'black'],
 				['annotation',  {calc:"stringify",sourceColumn:2,type:"string",role:"annotation"}]
 			];
 			let graphs = new Graphs('chart_div_BarChart', columns, google);
@@ -71,8 +71,22 @@
 				},
 				series: {
 					1: {
-						color: 'green',
-						visibleInLegend: true
+						color: '#0080FF',
+						visibleInLegend: true,
+						annotations: {
+							textStyle : { 
+								color: 'black'
+							}
+						}
+					},
+					2: {
+						color: '#2ECCFA',
+						visibleInLegend: true,
+						annotations: {
+							textStyle : { 
+								color: 'black'
+							}
+						}
 					}
 				}
 			}

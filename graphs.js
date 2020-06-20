@@ -171,8 +171,8 @@ class Graphs {
 
 		switch( this.type ) {
 			case "column":
-			//chart = new this.google.visualization.BarChart( this.DOMElement )	
-			//chart = new this.google.charts.Bar( this.DOMElement );
+			// chart = new this.google.visualization.BarChart( this.DOMElement )	
+			// chart = new this.google.charts.Bar( this.DOMElement );
 			chart = new this.google.visualization.ColumnChart( this.DOMElement )	
 			//Options can be NULL when passed
 			break;
@@ -183,8 +183,8 @@ class Graphs {
 			break;
 		}
 		// chart.draw(this.graphData, this.option);
-		// console.log(this.option)
 		chart.draw(view, this.option);
+		// chart.draw(view, this.google.charts.Bar.convertOptions(this.option))
 	}
 
 	unify( data ) {
