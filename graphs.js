@@ -169,7 +169,7 @@ class Graphs {
 	unify( data ) {
 		// get data of same category
 		let category = new Set()
-		for( let i in data ) {
+		for( let i in data )
 			category.add( data[i][this.columns[0][1]] )
 
 		let structure = []
@@ -177,23 +177,26 @@ class Graphs {
 
 		for( let i in category ) {
 			let computedData = {}
-			subcategory[this.columns[0][1]] = this.columns[0][1]
-			for( let i in data ) {
-				if( data[i][this.columns[0][1] == category[i] ) {
-					for( let j in this.columns ) {
-						computedData[this.columns[j]] = 
-						computedData[this.columns[j]] == "undefined" ?
-						Number(this.columns[j]):
-						computedData[this.columns[j]] + Number(this.columns[j])
+			computedData[this.columns[0][1]] = category[i]
+			for( let k in data ) {
+				let data_unique_value = data[k][this.columns[0][1]]
+				// console.log("unique_data_value: " + data_unique_value)
+				// console.log("unique_category  : " + category[i])
+				if( data_unique_value == category[i] ) {
+					for( let j = 1; j< this.columns.length; ++j ) {
+						computedData[this.columns[j][1]] = 
+						Object.keys(computedData).indexOf(this.columns[j][1]) < 0 ?
+						Number(data[k][this.columns[j][1]]):
+						Number(computedData[this.columns[j][1]]) + Number(data[k][this.columns[j][1]])
 					}
 				}
+				structure.push(computedData)
 			}				
 
 			/*
 			for( let j = 1; j < computedData.length; ++j )
 				subcategory[this.columns[j][1]] = computedData[this.columns[j][1]]
 			*/
-			structure.push(subcategory)
 		}
 		return structure
 	}
@@ -201,7 +204,7 @@ class Graphs {
 	addSlicer( slicer ) {
 		slicer.DOMElement.addEventListener('value_changed', async ( args )=>{
 			let data = await this.getData(slicer.independentVariable, args.detail );
-			data = unify(data)
+			data = this.unify(data)
 			console.log("=> Graphing data:", data);
 
 			//this.reset();
