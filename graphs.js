@@ -176,8 +176,9 @@ class Graphs {
 		category = Array.from( category )
 
 		for( let i in category ) {
+			let computedData = {}
+			subcategory[this.columns[0][1]] = this.columns[0][1]
 			for( let i in data ) {
-				let computedData = {}
 				if( data[i][this.columns[0][1] == category[i] ) {
 					for( let j in this.columns ) {
 						computedData[this.columns[j]] = 
@@ -186,13 +187,15 @@ class Graphs {
 						computedData[this.columns[j]] + Number(this.columns[j])
 					}
 				}
-				subcategory = [this.columns[0][1]]
-				let j = 1
-				for( j in computedData )
-					subcategory.push(this.columns[j])
-						
-					
+			}				
+
+			/*
+			for( let j = 1; j < computedData.length; ++j )
+				subcategory[this.columns[j][1]] = computedData[this.columns[j][1]]
+			*/
+			structure.push(subcategory)
 		}
+		return structure
 	}
 
 	addSlicer( slicer ) {
