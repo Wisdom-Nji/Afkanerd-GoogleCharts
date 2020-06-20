@@ -142,16 +142,6 @@ class Graphs {
 		})();
 
 
-		// get all matching unique values
-		let u_values = (()=>{
-			let u_set = new Set()
-			for( let i in data )  {
-				u_set.add( data[i][this.unifiedColumn])
-			}
-			let u_array = Array.from(u_set)
-			// return Array.from(u_set)
-		})()
-		console.log("Unique values", u_values)
 		// console.log( "Prepared Data: ", preparedData )
 
 		this.graphData = new this.google.visualization.arrayToDataTable( preparedData );
@@ -176,9 +166,39 @@ class Graphs {
 		// chart.draw(view, this.options);
 	}
 
+	unify( data ) {
+		// get data of same category
+		let category = new Set()
+		for( let i in data ) {
+			category.add( data[i][this.columns[0][1]] )
+
+		let structure = []
+		category = Array.from( category )
+
+		for( let i in category ) {
+			for( let i in data ) {
+				let computedData = {}
+				if( data[i][this.columns[0][1] == category[i] ) {
+					for( let j in this.columns ) {
+						computedData[this.columns[j]] = 
+						computedData[this.columns[j]] == "undefined" ?
+						Number(this.columns[j]):
+						computedData[this.columns[j]] + Number(this.columns[j])
+					}
+				}
+				subcategory = [this.columns[0][1]]
+				let j = 1
+				for( j in computedData )
+					subcategory.push(this.columns[j])
+						
+					
+		}
+	}
+
 	addSlicer( slicer ) {
 		slicer.DOMElement.addEventListener('value_changed', async ( args )=>{
 			let data = await this.getData(slicer.independentVariable, args.detail );
+			data = unify(data)
 			console.log("=> Graphing data:", data);
 
 			//this.reset();
