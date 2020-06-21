@@ -167,6 +167,11 @@ class Graphs {
 		view.setColumns(columnDetails);
 
 		switch( this.type ) {
+			case "bar":
+			chart = new this.google.visualization.BarChart( this.DOMElement )	
+			// chart = new this.google.charts.Bar( this.DOMElement );
+			break;
+
 			case "column":
 			// chart = new this.google.visualization.BarChart( this.DOMElement )	
 			// chart = new this.google.charts.Bar( this.DOMElement );
