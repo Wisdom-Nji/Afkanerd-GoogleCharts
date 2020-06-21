@@ -64,10 +64,6 @@ class Graphs {
 		this.option = option;
 	}
 
-	bindData( data ) {
-		this.data = data;
-	}
-
 	getData( independentVariable, values,slicers ) {
 		return new Promise( (resolve, reject)=> {
 			let v_data = []
