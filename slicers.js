@@ -54,8 +54,8 @@ class Slicers extends Event {
 		})
 		optgroup.appendChild(option)
 		for(let i = 0;i<data.length;i++) {
-			option = new Option(data[i], data[i] );
-			optgroup.appendChild(option);
+			let other_options = new Option(data[i], data[i] );
+			optgroup.appendChild(other_options);
 		}
 
 		// This should empty the render slicer, but id doesn't
