@@ -108,7 +108,6 @@
 			graphs.setTitle("Testing framework");
 			graphs.setType = "column"
 			graphs.setUnifiedColumn = 'Date'
-			// graphs.bindData( sampleData );
 
 			// Independent Variables
 			let slicers = new Slicers('slicers_div');
@@ -122,14 +121,14 @@
 			// Dependent Variables
 			let slicers_site = new Slicers('slicers_div_1');
 			slicers_site.setIndependentVariable = 'Site';
-			slicers_site.bindData( sampleData );
 			slicers_site.listenToSlicer( slicers );
+			// slicers_site.setLabel = "Regions"
 			graphs.addSlicer( slicers_site );
 
 			let dateSlicers = new Slicers('year_div')
 			dateSlicers.setIndependentVariable = 'Date'
-			dateSlicers.bindData( sampleData )
 			dateSlicers.listenToSlicer( slicers )
+			// dateSlicers.setLabel = "Sites"
 			graphs.addSlicer( dateSlicers )
 		})
 

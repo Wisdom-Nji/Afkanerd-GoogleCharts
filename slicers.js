@@ -27,11 +27,15 @@ class Slicers extends Event {
 
 	}
 
-	render( data, label ) {
+	set setLabel( label ) {
+		this.label = label
+	}
+
+	render( data ) {
 		if(typeof data == "undefined" || data === null) data = this.data;
 		var i = 0;
 		let optgroup = document.createElement("optgroup");
-		optgroup.label = typeof label == "undefined" ? "sample label" : label //TODO:
+		optgroup.label = typeof this.label == "undefined" ? this.independentVariable : this.label //TODO:
 
 		for(;i<data.length;i++) {
 			let option = new Option(data[i], data[i] );
@@ -95,7 +99,7 @@ class Slicers extends Event {
 			console.log("=> Slicing data:", data);
 
 			//this.reset();
-			this.render( data, args.details );
+			this.render( data );
 		});
 	}
 }
