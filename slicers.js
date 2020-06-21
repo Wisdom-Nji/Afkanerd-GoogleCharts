@@ -33,12 +33,28 @@ class Slicers extends Event {
 
 	render( data ) {
 		if(typeof data == "undefined" || data === null) data = this.data;
-		var i = 0;
-		let optgroup = document.createElement("optgroup");
-		optgroup.label = typeof this.label == "undefined" ? this.independentVariable : this.label //TODO:
+		let optgroup = document.createElement("optgroup")
+		optgroup.label = typeof this.label == "undefined" ? this.independentVariable : this.label
 
-		for(;i<data.length;i++) {
-			let option = new Option(data[i], data[i] );
+		let option = new Option("-- Select All --", "select_all")
+		option.onclick = ((e)=>{
+			let data = (()=>{
+				let v_data = []
+				for(let i in optgroup.childNodes)
+					if(optgroup.childNodes[i].tagName == "OPTION") {
+						optgroup.childNodes[i].selected = true
+						v_data.push(optgroup.childNodes[i].value)
+					}
+
+				return v_data
+			})()
+			// console.log("data", data)
+			let valueChangeEvent = new CustomEvent("value_changed", { detail: data })
+			this.DOMElement.dispatchEvent( valueChangeEvent );
+		})
+		optgroup.appendChild(option)
+		for(let i = 0;i<data.length;i++) {
+			option = new Option(data[i], data[i] );
 			optgroup.appendChild(option);
 		}
 
