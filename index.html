@@ -114,14 +114,9 @@
 			let slicers = new Slicers('slicers_div');
 			slicers.setIndependentVariable = 'Region';
 			slicers.setData = sampleData;
+			slicers.bindData( sampleData )
 			slicers.render();
 			graphs.addSlicer( slicers );
-
-			let dateSlicers = new Slicers('year_div')
-			slicers.setIndependentVariable = 'Date'
-			slicers.setData = sampleData
-			slicers.render();
-			graphs.addSlicer( dateSlicers )
 
 
 			// Dependent Variables
@@ -130,6 +125,12 @@
 			slicers_site.bindData( sampleData );
 			slicers_site.listenToSlicer( slicers );
 			graphs.addSlicer( slicers_site );
+
+			let dateSlicers = new Slicers('year_div')
+			dateSlicers.setIndependentVariable = 'Date'
+			dateSlicers.bindData( sampleData )
+			dateSlicers.listenToSlicer( slicers )
+			graphs.addSlicer( dateSlicers )
 		})
 
 		</script>

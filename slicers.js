@@ -19,6 +19,8 @@ class Slicers extends Event {
 				return v_data;
 			})()
 
+			// slicers have customized data at this point, 
+			// that data has to be passed to the graph to use for filtering
 			let valueChangeEvent = new CustomEvent("value_changed", { detail: data })
 			this.DOMElement.dispatchEvent( valueChangeEvent );
 		}
@@ -67,21 +69,29 @@ class Slicers extends Event {
 		this.boundData = data;
 	}
 
-	getData( independentVariable, values ) {
+	getData( independentVariable, values, slicers ) {
+		console.log("Filtering for " + independentVariable + " with: ", values)
+		console.log("boun_data", slicers.boundData)
 		return new Promise( (resolve, reject)=> {
-			let v_data = []
-			for(let i in this.boundData )
-				if(values.findIndex( variables => this.boundData[i][independentVariable] == variables ) != -1 && v_data.findIndex( variables => this.boundData[i][this.independentVariable] == variables ) == -1) 
-					v_data.push( this.boundData[i][this.independentVariable] );
+			let u_data = new Set()
+			let new_boundData = new Set()
+			for(let i in slicers.boundData ) {
+				if((values.findIndex( value => slicers.boundData[i][independentVariable] == value ) != -1)) {
+					new_boundData.add( slicers.boundData[i] )
+					u_data.add( slicers.boundData[i][this.independentVariable] )
+					// v_data.push( this.boundData[i][this.independentVariable] )
+				}
+			}
 			
-			resolve(v_data);
+			this.boundData = Array.from(new_boundData )
+			resolve(Array.from(u_data));
 		});
 
 	}
 
 	listenToSlicer( slicer ) {
 		slicer.DOMElement.addEventListener('value_changed', async (args)=>{
-			let data = await this.getData(slicer.independentVariable, args.detail );
+			let data = await this.getData(slicer.independentVariable, args.detail, slicer );
 			console.log("=> Slicing data:", data);
 
 			//this.reset();

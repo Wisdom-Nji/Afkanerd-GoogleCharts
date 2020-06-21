@@ -68,12 +68,12 @@ class Graphs {
 		this.data = data;
 	}
 
-	getData( independentVariable, values ) {
+	getData( independentVariable, values,slicers ) {
 		return new Promise( (resolve, reject)=> {
 			let v_data = []
-			for(let i in this.data )
-				if(values.findIndex( variables => this.data[i][independentVariable] == variables ) != -1 ) 
-					v_data.push( this.data[i] );
+			for(let i in slicers.boundData )
+				if(values.findIndex( variables => slicers.boundData[i][independentVariable] == variables ) != -1 ) 
+					v_data.push( slicers.boundData[i] );
 			
 			resolve(v_data);
 		});
@@ -219,7 +219,7 @@ class Graphs {
 
 	addSlicer( slicer ) {
 		slicer.DOMElement.addEventListener('value_changed', async ( args )=>{
-			let data = await this.getData(slicer.independentVariable, args.detail );
+			let data = await this.getData(slicer.independentVariable, args.detail,slicer );
 			data = this.unify(data)
 			console.log("=> Graphing data:", data);
 
