@@ -89,6 +89,7 @@ class Graphs {
 
 		// This works for only 2D data
 		// Dynamic enough to change Dimensions would be intended target
+		data = this.unify(data)
 		let preparedData = (()=>{
 			// let v_data = typeof this.label != "undefined" ? [[this.columns[0][1], this.columns[1][1], { role: 'annotation' }] ] : [ [this.columns[0][1], this.columns[1][1]] ]
 
@@ -216,7 +217,6 @@ class Graphs {
 	addSlicer( slicer ) {
 		slicer.DOMElement.addEventListener('value_changed', async ( args )=>{
 			let data = await this.getData(slicer.independentVariable, args.detail,slicer );
-			data = this.unify(data)
 			console.log("=> Graphing data:", data);
 
 			//this.reset();
