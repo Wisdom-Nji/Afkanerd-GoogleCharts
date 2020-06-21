@@ -90,8 +90,8 @@ class Slicers extends Event {
 	}
 
 	getData( independentVariable, values, slicers ) {
-		console.log("Filtering for " + independentVariable + " with: ", values)
-		console.log("boun_data", slicers.boundData)
+		// console.log("Filtering for " + independentVariable + " with: ", values)
+		// console.log("boun_data", slicers.boundData)
 		return new Promise( (resolve, reject)=> {
 			let u_data = new Set()
 			let new_boundData = new Set()

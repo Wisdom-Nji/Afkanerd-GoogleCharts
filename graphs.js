@@ -95,7 +95,7 @@ class Graphs {
 			let v_data = [[]]
 			// Columns number determines the number Dimensions = this.columns
 			for(let i in this.columns) {
-				console.log("column: " + this.columns[i][0])
+				// console.log("column: " + this.columns[i][0])
 				if( this.columns[i][0] == 'style' ) 
 					v_data[0].push( {role: 'style'})
 				else if( this.columns[i][0] == 'annotation') continue
@@ -141,7 +141,7 @@ class Graphs {
 				v_data.push( dataRow )
 			}
 
-			console.log(v_data);
+			// console.log(v_data);
 			return v_data;
 		})();
 
