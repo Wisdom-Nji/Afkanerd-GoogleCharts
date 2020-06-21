@@ -8,6 +8,7 @@
 	<body>
 		<div id="slicers"><select id="slicers_div" multiple size="4" style="width: 300"></select></div>
 		<div id="slicers"><select id="slicers_div_1" multiple size="4" style="width: 300"></select></div>
+		<div id="slicers"><select id="year_div" multiple size="4" style="width: 300"></select></div>
 		<hr>
 		<div id="chart_div_BarChart"></div>
 
@@ -64,6 +65,8 @@
 				hAxis: {
 					gridlines: {
 						count: 0
+						// Removes the labels on the x-axis
+						// Each line comes with an x-axis label
 					}
 				},
 				vAxis: {
@@ -104,39 +107,26 @@
 			graphs.setOption( options );
 			graphs.setTitle("Testing framework");
 			graphs.setType = "column"
-			// graphs.setLabel = true
 			graphs.setUnifiedColumn = 'Date'
-
-			
-			// This is an advanced method of specifying the options
-			/*
-			graphs.setColumns = [0,
-				1,{
-					calc: "stringify",
-					sourceColumn: 1,
-					type: "string",
-					role: "annotation"
-				},
-				2,{
-					calc: "stringify",
-					sourceColumn: 2,
-					type: "string",
-					role: "annotation"
-				}]
-			*/
-
 			graphs.bindData( sampleData );
 
-			// Testing Slicer:1
+			// Independent Variables
 			let slicers = new Slicers('slicers_div');
 			slicers.setIndependentVariable = 'Region';
 			slicers.setData = sampleData;
 			slicers.render();
 			graphs.addSlicer( slicers );
 
+			let dateSlicers = new Slicers('year_div')
+			slicers.setIndependentVariable = 'Date'
+			slicers.setData = sampleData
+			slicers.render();
+			graphs.addSlicer( dateSlicers )
+
+
+			// Dependent Variables
 			let slicers_site = new Slicers('slicers_div_1');
 			slicers_site.setIndependentVariable = 'Site';
-			// slicers_site.setData = sampleData;
 			slicers_site.bindData( sampleData );
 			slicers_site.listenToSlicer( slicers );
 			graphs.addSlicer( slicers_site );
