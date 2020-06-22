@@ -67,9 +67,17 @@ class Graphs {
 	getData( independentVariable, values,slicers ) {
 		return new Promise( (resolve, reject)=> {
 			let v_data = []
-			for(let i in slicers.boundData )
-				if(values.findIndex( variables => slicers.boundData[i][independentVariable] == variables ) != -1 ) 
+			for(let i in slicers.boundData ){
+				let isCustomSlicer = (value) => {
+					let custom_data = slicers.boundData[i][independentVariable]
+					if(typeof slicers.customFunction != "undefined" )
+						custom_data = slicers.customFunction.func( custom_data )
+					return custom_data
+				}
+
+				if(values.findIndex( variables => isCustomSlicer(variables) == variables ) != -1 ) 
 					v_data.push( slicers.boundData[i] );
+			}
 			
 			resolve(v_data);
 		});

@@ -2,6 +2,7 @@
 'use strict';
 
 class Slicers extends Event {
+	customFunction
 	constructor( LabelDOMElement ) {
 		super('onchange');
 		this.LabelDOMElement = LabelDOMElement;
@@ -134,13 +135,13 @@ class Slicers extends Event {
 
 	}
 
-	listenToSlicer( slicer, customFunction ) {
+	listenToSlicer( slicer ) {
 		slicer.DOMElement.addEventListener('value_changed', async (args)=>{
 			let data = await this.getData(slicer.independentVariable, args.detail, slicer );
 			console.log("=> Slicing data:", data);
 
-			if( typeof customFunction != "undefined" ) {
-				data = this.customizeBindData(customFunction.key, customFunction.func, data)
+			if( typeof this.customFunction != "undefined" ) {
+				data = this.customizeBindData(this.customFunction.key, this.customFunction.func, data)
 			}
 
 			//this.reset();
