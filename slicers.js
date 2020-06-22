@@ -83,11 +83,15 @@ class Slicers extends Event {
 		this.independentVariable = independentVariable;
 	}
 
-	customizeBindData( key, customFunction, data ) {
+	customizeBindData( key, customFunction, data, newKey, typeNewKey ) {
 		for(let i in data ) 
-			data[i][key] = customFunction( data[i][key] )
+			data[i][typeof newKey == "undefined" ? key : newKey] = customFunction( data[i][key] )
 
-		this.boundData = data
+		if(typeof newKey != "undefined" && typeof typeNewKey != "undefined")
+			this.typeIndependentVariable = typeNewKey
+
+		// this.boundData = data
+		return data
 	}
 
 	bindData( data ) {
@@ -131,10 +135,14 @@ class Slicers extends Event {
 
 	}
 
-	listenToSlicer( slicer ) {
+	listenToSlicer( slicer, customFunction ) {
 		slicer.DOMElement.addEventListener('value_changed', async (args)=>{
 			let data = await this.getData(slicer.independentVariable, args.detail, slicer );
 			console.log("=> Slicing data:", data);
+
+			if( typeof customFunctions != "undefined" ) {
+				data = this.customizeBindData(customFunction.key, customFunction.func, data, customFunction.new_key, customFunction.new_key_type)
+			}
 
 			//this.reset();
 			this.render( data );
