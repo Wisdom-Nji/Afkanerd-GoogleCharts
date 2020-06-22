@@ -169,9 +169,11 @@ class Graphs {
 		// get data of same category
 		let category = new Set()
 		let unifiedKey = typeof independentVariable == "undefined" ? this.columns[0][1] : independentVariable
+		this.columns[0][1] = unifiedKey
 		console.log("unifiedKey: " + unifiedKey )
 		for( let i in data )
 			category.add( data[i][unifiedKey] )
+		console.log("category", category)
 
 		let structure = []
 		category = Array.from( category )
@@ -181,8 +183,8 @@ class Graphs {
 			computedData[unifiedKey] = category[i]
 			for( let k in data ) {
 				let data_unique_value = data[k][unifiedKey]
-				// console.log("unique_data_value: " + data_unique_value)
-				// console.log("unique_category  : " + category[i])
+				console.log("unique_data_value: " + data_unique_value)
+				console.log("unique_category  : " + category[i])
 				if( data_unique_value == category[i] ) {
 					for( let j = 1; j< this.columns.length; ++j ) {
 						computedData[this.columns[j][1]] = 
@@ -194,6 +196,8 @@ class Graphs {
 				structure.push(computedData)
 			}				
 		}
+		
+		// console.log("final structure", structure)
 		return structure
 	}
 
@@ -202,7 +206,7 @@ class Graphs {
 			let data = await this.getData(slicer.independentVariable, args.detail,slicer );
 			console.log("=> Graphing data:", data);
 
-			//this.reset();
+			// this.render( data );
 			this.render( data, slicer );
 		});
 	}
