@@ -87,7 +87,7 @@ class Graphs {
 	render( data, slicer ) {
 		var chart;
 
-		data = typeof slicer == "undefined" ? this.unify(data) : this.unify(data, slicer.independentVariable)
+		data = typeof slicer == "undefined" ? this.unify(data) : this.unify(data, slicer)
 		let preparedData = (()=>{
 			let v_data = [[]]
 			// Columns number determines the number Dimensions = this.columns
@@ -165,12 +165,23 @@ class Graphs {
 		// chart.draw(view, this.google.charts.Bar.convertOptions(this.option))
 	}
 
-	unify( data, independentVariable ) {
+	unify( data, slicer ) {
 		// get data of same category
 		let category = new Set()
+		let independentVariable
+		let typeIndependentVariable
+		if( typeof slicer != "undefined" ) {
+			independentVariable = slicer.independentVariable
+			typeIndependentVariable = slicer.typeIndependentVariable
+		}
 		let unifiedKey = typeof independentVariable == "undefined" ? this.columns[0][1] : independentVariable
-		this.columns[0][1] = unifiedKey
-		console.log("unifiedKey: " + unifiedKey )
+		let tmpColumns = this.columns
+		if( typeof independentVariable != "undefined" ) {
+			tmpColumns[0][0] = typeof typeIndependentVariable == "undefined" ? tmpColumns[0][0] : typeIndependentVariable
+			tmpColumns[0][1] = unifiedKey
+		}
+		console.log("tmpColumns", tmpColumns)
+		// console.log("unifiedKey: " + unifiedKey )
 		for( let i in data )
 			category.add( data[i][unifiedKey] )
 		console.log("category", category)
@@ -183,21 +194,21 @@ class Graphs {
 			computedData[unifiedKey] = category[i]
 			for( let k in data ) {
 				let data_unique_value = data[k][unifiedKey]
-				console.log("unique_data_value: " + data_unique_value)
-				console.log("unique_category  : " + category[i])
+				// console.log("unique_data_value: " + data_unique_value)
+				// console.log("unique_category  : " + category[i])
 				if( data_unique_value == category[i] ) {
-					for( let j = 1; j< this.columns.length; ++j ) {
-						computedData[this.columns[j][1]] = 
-						Object.keys(computedData).indexOf(this.columns[j][1]) < 0 ?
-						Number(data[k][this.columns[j][1]]):
-						Number(computedData[this.columns[j][1]]) + Number(data[k][this.columns[j][1]])
+					for( let j = 1; j< tmpColumns.length; ++j ) {
+						computedData[tmpColumns[j][1]] = 
+						Object.keys(computedData).indexOf(tmpColumns[j][1]) < 0 ?
+						Number(data[k][tmpColumns[j][1]]):
+						Number(computedData[tmpColumns[j][1]]) + Number(data[k][tmpColumns[j][1]])
 					}
 				}
-				structure.push(computedData)
 			}				
+			structure.push(computedData)
 		}
 		
-		// console.log("final structure", structure)
+		console.log("final structure", structure)
 		return structure
 	}
 
