@@ -84,15 +84,11 @@ class Graphs {
 		this.unifiedColumn = un_column
 	}
 
-	render( data ) {
+	render( data, slicer ) {
 		var chart;
 
-		// This works for only 2D data
-		// Dynamic enough to change Dimensions would be intended target
-		data = this.unify(data)
+		data = typeof slicer == "undefined" ? this.unify(data) : this.unify(data, slicer.independentVariable)
 		let preparedData = (()=>{
-			// let v_data = typeof this.label != "undefined" ? [[this.columns[0][1], this.columns[1][1], { role: 'annotation' }] ] : [ [this.columns[0][1], this.columns[1][1]] ]
-
 			let v_data = [[]]
 			// Columns number determines the number Dimensions = this.columns
 			for(let i in this.columns) {
@@ -103,23 +99,8 @@ class Graphs {
 					//v_data[0].push( { role: 'annotation' } )
 				else v_data[0].push( this.columns[i][1] )
 			}
-			// console.log("v_data", v_data)
 
 			for(let i in data ) {
-				/*(
-				// this.columns[0][1]
-				// this.columns[x][y] [x,y0,y1,y2,y3]
-				let oneD_axis = this.columns[0].findIndex(variable => 'date' == variable ) == -1 ? data[i][this.columns[0][1]] : new Date(data[i][this.columns[0][1]])
-				let twoD_axis = this.columns[1].findIndex(variable => 'date' == variable ) == -1 ? data[i][this.columns[1][1]] : new Date(data[i][this.columns[1][1]])
-
-				if( typeof this.label != "undefined" ) 
-					v_data.push([oneD_axis, twoD_axis, data[i][this.label]] );
-				else
-					v_data.push([oneD_axis, twoD_axis]);
-				//console.log("=>x_axis:",oneD_axis)
-				//console.log("=>y_axis:",twoD_axis)
-				*/
-
 				let dataRow = []
 				for(let j in this.columns ) {
 					if( this.columns[j][0] == 'annotation') continue
@@ -134,11 +115,6 @@ class Graphs {
 
 				}
 				
-				/*
-				if( typeof this.label != "undefined" ) 
-					dataRow.push( data[i][this.label] )
-				*/
-
 				v_data.push( dataRow )
 			}
 
@@ -189,20 +165,22 @@ class Graphs {
 		// chart.draw(view, this.google.charts.Bar.convertOptions(this.option))
 	}
 
-	unify( data ) {
+	unify( data, independentVariable ) {
 		// get data of same category
 		let category = new Set()
+		let unifiedKey = typeof independentVariable == "undefined" ? this.columns[0][1] : independentVariable
+		console.log("unifiedKey: " + unifiedKey )
 		for( let i in data )
-			category.add( data[i][this.columns[0][1]] )
+			category.add( data[i][unifiedKey] )
 
 		let structure = []
 		category = Array.from( category )
 
 		for( let i in category ) {
 			let computedData = {}
-			computedData[this.columns[0][1]] = category[i]
+			computedData[unifiedKey] = category[i]
 			for( let k in data ) {
-				let data_unique_value = data[k][this.columns[0][1]]
+				let data_unique_value = data[k][unifiedKey]
 				// console.log("unique_data_value: " + data_unique_value)
 				// console.log("unique_category  : " + category[i])
 				if( data_unique_value == category[i] ) {
@@ -225,7 +203,7 @@ class Graphs {
 			console.log("=> Graphing data:", data);
 
 			//this.reset();
-			this.render( data );
+			this.render( data, slicer );
 		});
 	}
 

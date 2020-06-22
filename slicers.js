@@ -95,10 +95,10 @@ class Slicers extends Event {
 
 	// addData( data ) - this is useful for adding data without iterating through all the data points //TODO:
 
-	customizeSetBindData( key, customFunction, data ) {
+	customizeSetBindData( key, customFunction, data, newKey ) {
 		let u_data = new Set()
 		for(let i in data ) {
-			data[i][key] = customFunction( data[i][key] )
+			data[i][typeof newKey == "undefined" ? key : newKey] = customFunction( data[i][key] )
 			u_data.add( data[i][this.independentVariable] )
 		}
 
