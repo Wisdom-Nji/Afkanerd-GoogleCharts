@@ -66,13 +66,13 @@ class Slicers extends Event {
 		this.DOMElement.appendChild( optgroup );
 	}
 	
-	set setData( sampleData ) { //This is data to populate the slicer with
+	set setData( data ) { //This is data to populate the slicer with
 		let v_data = []
 		this.data = (()=> {
 			let v_data = [];
-			for( let i in sampleData ) {
-				if(v_data.findIndex( variables => sampleData[i][this.independentVariable] == variables ) != -1) continue;
-				v_data.push( sampleData[i][this.independentVariable] );
+			for( let i in data ) {
+				if(v_data.findIndex( variables => data[i][this.independentVariable] == variables ) != -1) continue;
+				v_data.push( data[i][this.independentVariable] );
 			}
 			return v_data;
 		})()
@@ -84,6 +84,13 @@ class Slicers extends Event {
 
 
 	// addData( data ) - this is useful for adding data without iterating through all the data points //TODO:
+
+	customizeBindData( key, customFunction, data ) {
+		for(let i in data ) 
+			data[i][key] = customFunction( data[i][key] )
+
+		this.boundData = data
+	}
 
 	bindData( data ) {
 		this.boundData = data;
