@@ -82,9 +82,6 @@ class Slicers extends Event {
 		this.independentVariable = independentVariable;
 	}
 
-
-	// addData( data ) - this is useful for adding data without iterating through all the data points //TODO:
-
 	customizeBindData( key, customFunction, data ) {
 		for(let i in data ) 
 			data[i][key] = customFunction( data[i][key] )
@@ -95,6 +92,20 @@ class Slicers extends Event {
 	bindData( data ) {
 		this.boundData = data;
 	}
+
+	// addData( data ) - this is useful for adding data without iterating through all the data points //TODO:
+
+	customizeSetBindData( key, customFunction, data ) {
+		let u_data = new Set()
+		for(let i in data ) {
+			data[i][key] = customFunction( data[i][key] )
+			u_data.add( data[i][this.independentVariable] )
+		}
+
+		this.data = Array.from( u_data )
+		this.boundData = data
+	}
+
 
 	getData( independentVariable, values, slicers ) {
 		// console.log("Filtering for " + independentVariable + " with: ", values)
