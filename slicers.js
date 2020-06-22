@@ -83,15 +83,14 @@ class Slicers extends Event {
 		this.independentVariable = independentVariable;
 	}
 
-	customizeBindData( key, customFunction, data, newKey, typeNewKey ) {
+	customizeBindData( key, customFunction, data ) {
+		let u_set = new Set()
 		for(let i in data ) 
-			data[i][typeof newKey == "undefined" ? key : newKey] = customFunction( data[i][key] )
+			u_set.add( customFunction( data[i] ) )
+			// data[i] = customFunction( data[i] )
+			// data[i][typeof newKey == "undefined" ? key : newKey] = customFunction( data[i][key] )
 
-		if(typeof newKey != "undefined" && typeof typeNewKey != "undefined")
-			this.typeIndependentVariable = typeNewKey
-
-		// this.boundData = data
-		return data
+		return Array.from( u_set )
 	}
 
 	bindData( data ) {
@@ -140,8 +139,8 @@ class Slicers extends Event {
 			let data = await this.getData(slicer.independentVariable, args.detail, slicer );
 			console.log("=> Slicing data:", data);
 
-			if( typeof customFunctions != "undefined" ) {
-				data = this.customizeBindData(customFunction.key, customFunction.func, data, customFunction.new_key, customFunction.new_key_type)
+			if( typeof customFunction != "undefined" ) {
+				data = this.customizeBindData(customFunction.key, customFunction.func, data)
 			}
 
 			//this.reset();
