@@ -78,7 +78,8 @@ class Slicers extends Event {
 		})()
 	}
 
-	set setIndependentVariable( independentVariable ) {
+	setIndependentVariable( independentVariable, unify) {
+		this.unify = typeof unify == "undefined" ? false : unify
 		this.independentVariable = independentVariable;
 	}
 

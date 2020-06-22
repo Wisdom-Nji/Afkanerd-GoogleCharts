@@ -170,11 +170,12 @@ class Graphs {
 		let category = new Set()
 		let independentVariable
 		let typeIndependentVariable
-		if( typeof slicer != "undefined" ) {
+		let unifiedKey = this.columns[0][1]
+		if( typeof slicer != "undefined" && slicer.unify == true) {
 			independentVariable = slicer.independentVariable
 			typeIndependentVariable = slicer.typeIndependentVariable
+			unifiedKey = slicer.independentVariable
 		}
-		let unifiedKey = typeof independentVariable == "undefined" ? this.columns[0][1] : independentVariable
 		let tmpColumns = this.columns
 		if( typeof independentVariable != "undefined" ) {
 			tmpColumns[0][0] = typeof typeIndependentVariable == "undefined" ? tmpColumns[0][0] : typeIndependentVariable
