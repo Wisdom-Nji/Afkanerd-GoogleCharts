@@ -15,16 +15,26 @@ class Slicers extends Event {
 				let v_data = []
 				for(let i in this.DOMElement.options) {
 					let option = this.DOMElement.options[i];
+					if(option.selected && option.value == "<select_all>") {
+						for(let i=1;i<this.DOMELelement.options.length;++i) {
+							let option = this.DOMElement.options[i]
+							v_data.push(option.value)
+						}
+						break
+					}
+
 					if(option.selected) 
-						v_data.push(option.value);
+						v_data.push(option.value)
 				}
 				return v_data;
 			})()
 
 			// slicers have customized data at this point, 
 			// that data has to be passed to the graph to use for filtering
-			let valueChangeEvent = new CustomEvent("value_changed", { detail: data })
-			this.DOMElement.dispatchEvent( valueChangeEvent );
+			if( data.length > 0 ) {
+				let valueChangeEvent = new CustomEvent("value_changed", { detail: data })
+				this.DOMElement.dispatchEvent( valueChangeEvent );
+			}
 		}
 
 	}
@@ -39,7 +49,8 @@ class Slicers extends Event {
 		let optgroup = document.createElement("optgroup")
 		optgroup.label = typeof this.label == "undefined" ? this.independentVariable : this.label
 
-		let option = new Option("-- Select All --", "select_all")
+		let option = new Option("-- Select All --", "<select_all>")
+		/*
 		option.onclick = ((e)=>{
 			let data = (()=>{
 				let v_data = []
@@ -52,9 +63,12 @@ class Slicers extends Event {
 				return v_data
 			})()
 			// console.log("data", data)
-			let valueChangeEvent = new CustomEvent("value_changed", { detail: data })
-			this.DOMElement.dispatchEvent( valueChangeEvent );
+			if( data.length > 0) {
+				let valueChangeEvent = new CustomEvent("value_changed", { detail: data })
+				this.DOMElement.dispatchEvent( valueChangeEvent );
+			}
 		})
+		*/
 		optgroup.appendChild(option)
 		if( typeof this.unify != "undefined" && this.unify == true ) {
 			let u_data = new Set()
@@ -107,7 +121,7 @@ class Slicers extends Event {
 
 	bindData( data ) {
 		this.boundData = data
-		console.log("Setting bound data to: ", this.boundData)
+		// console.log("Setting bound data to: ", this.boundData)
 	}
 
 	// addData( data ) - this is useful for adding data without iterating through all the data points //TODO:
@@ -156,6 +170,7 @@ class Slicers extends Event {
 
 	listenToSlicer( slicer ) {
 		slicer.DOMElement.addEventListener('value_changed', async (args)=>{
+			console.log("=> About to slicer for: ", args.detail)
 			let data = await this.getData(slicer.independentVariable, args.detail, slicer );
 			console.log("=> Slicing data:", data);
 

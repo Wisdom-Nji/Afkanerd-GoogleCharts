@@ -179,18 +179,19 @@ class Graphs {
 		let independentVariable
 		let typeIndependentVariable
 		let unifiedKey = this.columns[0][1]
-		if( typeof slicer != "undefined" && slicer.unify == true) {
+		if( typeof slicer != "undefined") {
 			independentVariable = slicer.independentVariable
 			typeIndependentVariable = slicer.typeIndependentVariable
-			unifiedKey = slicer.independentVariable
+			if( slicer.unify == true ) 
+				unifiedKey = slicer.independentVariable
 		}
 		let tmpColumns = this.columns
 		if( typeof independentVariable != "undefined" ) {
 			tmpColumns[0][0] = typeof typeIndependentVariable == "undefined" ? tmpColumns[0][0] : typeIndependentVariable
 			tmpColumns[0][1] = unifiedKey
 		}
-		console.log("tmpColumns", tmpColumns)
-		console.log("unifiedKey: " + unifiedKey )
+		// console.log("tmpColumns", tmpColumns)
+		// console.log("unifiedKey: " + unifiedKey )
 		for( let i in data )
 			category.add( (typeof slicer == "undefined" || typeof slicer.customFunction == "undefined") ? data[i][unifiedKey] : slicer.customFunction.func(data[i][unifiedKey]) )
 		console.log("category", category)
@@ -203,8 +204,8 @@ class Graphs {
 			computedData[unifiedKey] = category[i]
 			for( let k in data ) {
 				let data_unique_value = (typeof slicer == "undefined" || typeof slicer.customFunction == "undefined") ? data[k][unifiedKey] : slicer.customFunction.func( data[k][unifiedKey] )
-				console.log("unique_data_value: " + data_unique_value)
-				console.log("unique_category  : " + category[i])
+				// console.log("unique_data_value: " + data_unique_value)
+				// console.log("unique_category  : " + category[i])
 				if( data_unique_value == category[i] ) {
 					// TODO: Make this into a custom function
 					for( let j = 1; j< tmpColumns.length; ++j ) {
