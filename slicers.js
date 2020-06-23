@@ -129,7 +129,7 @@ class Slicers extends Event {
 		return new Promise( (resolve, reject)=> {
 			let u_data = new Set()
 			let new_boundData = new Set()
-			console.log("boundData", slicers.boundData)
+			// console.log("boundData", slicers.boundData)
 			for(let i in slicers.boundData ) {
 				let isCustomSlicer = (value) => {
 					let custom_data = slicers.boundData[i][independentVariable]
