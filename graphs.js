@@ -192,7 +192,7 @@ class Graphs {
 		console.log("tmpColumns", tmpColumns)
 		console.log("unifiedKey: " + unifiedKey )
 		for( let i in data )
-			category.add( data[i][unifiedKey] )
+			category.add( (typeof slicer == "undefined" || typeof slicer.customFunction == "undefined") ? data[i][unifiedKey] : slicer.customFunction.func(data[i][unifiedKey]) )
 		console.log("category", category)
 
 		let structure = []
@@ -202,7 +202,7 @@ class Graphs {
 			let computedData = {}
 			computedData[unifiedKey] = category[i]
 			for( let k in data ) {
-				let data_unique_value = data[k][unifiedKey]
+				let data_unique_value = (typeof slicer == "undefined" || typeof slicer.customFunction == "undefined") ? data[k][unifiedKey] : slicer.customFunction.func( data[k][unifiedKey] )
 				// console.log("unique_data_value: " + data_unique_value)
 				// console.log("unique_category  : " + category[i])
 				if( data_unique_value == category[i] ) {
