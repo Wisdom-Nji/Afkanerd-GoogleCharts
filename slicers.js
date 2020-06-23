@@ -16,8 +16,9 @@ class Slicers extends Event {
 				for(let i in this.DOMElement.options) {
 					let option = this.DOMElement.options[i];
 					if(option.selected && option.value == "<select_all>") {
-						for(let i=1;i<this.DOMELelement.options.length;++i) {
+						for(let i=1;i<this.DOMElement.options.length;++i) {
 							let option = this.DOMElement.options[i]
+							option.selected = true // For UX reasons
 							v_data.push(option.value)
 						}
 						break
