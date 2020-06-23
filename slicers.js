@@ -3,6 +3,7 @@
 
 class Slicers extends Event {
 	customFunction
+	boundData
 	constructor( LabelDOMElement ) {
 		super('onchange');
 		this.LabelDOMElement = LabelDOMElement;
@@ -101,7 +102,8 @@ class Slicers extends Event {
 	}
 
 	bindData( data ) {
-		this.boundData = data;
+		this.boundData = data
+		console.log("Setting bound data to: ", this.boundData)
 	}
 
 	// addData( data ) - this is useful for adding data without iterating through all the data points //TODO:
@@ -137,7 +139,7 @@ class Slicers extends Event {
 				}
 			}
 			
-			this.boundData = Array.from(new_boundData )
+			// this.boundData = Array.from(new_boundData )
 			resolve(Array.from(u_data));
 		});
 
