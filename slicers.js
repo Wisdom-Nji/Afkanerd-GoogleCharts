@@ -129,8 +129,15 @@ class Slicers extends Event {
 		return new Promise( (resolve, reject)=> {
 			let u_data = new Set()
 			let new_boundData = new Set()
+			console.log("boundData", slicers.boundData)
 			for(let i in slicers.boundData ) {
-				if((values.findIndex( value => slicers.boundData[i][independentVariable] == value ) != -1)) {
+				let isCustomSlicer = (value) => {
+					let custom_data = slicers.boundData[i][independentVariable]
+					if(typeof slicers.customFunction != "undefined" )
+						custom_data = slicers.customFunction.func( custom_data )
+					return custom_data
+				}
+				if(values.findIndex( value => isCustomSlicer( value ) == value ) != -1) {
 					new_boundData.add( slicers.boundData[i] )
 					u_data.add( slicers.boundData[i][this.independentVariable] )
 					// v_data.push( this.boundData[i][this.independentVariable] )
@@ -146,11 +153,13 @@ class Slicers extends Event {
 	listenToSlicer( slicer ) {
 		slicer.DOMElement.addEventListener('value_changed', async (args)=>{
 			let data = await this.getData(slicer.independentVariable, args.detail, slicer );
-			console.log("=> Slicing data:", data);
 
+			/*
 			if( typeof this.customFunction != "undefined" ) {
 				data = this.customizeBindData(this.customFunction.key, this.customFunction.func, data)
 			}
+			*/
+			console.log("=> Slicing data:", data);
 
 			//this.reset();
 			this.render( data );

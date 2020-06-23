@@ -189,8 +189,8 @@ class Graphs {
 			tmpColumns[0][0] = typeof typeIndependentVariable == "undefined" ? tmpColumns[0][0] : typeIndependentVariable
 			tmpColumns[0][1] = unifiedKey
 		}
-		// console.log("tmpColumns", tmpColumns)
-		// console.log("unifiedKey: " + unifiedKey )
+		console.log("tmpColumns", tmpColumns)
+		console.log("unifiedKey: " + unifiedKey )
 		for( let i in data )
 			category.add( data[i][unifiedKey] )
 		console.log("category", category)
