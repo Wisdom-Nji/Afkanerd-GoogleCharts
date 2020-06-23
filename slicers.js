@@ -72,6 +72,9 @@ class Slicers extends Event {
 		// This method is quite slow and should have a faster method of chaning the values of the content
 		this.DOMElement.innerHTML = "";
 		this.DOMElement.appendChild( optgroup );
+
+		let valueChangeEvent = new CustomEvent("updated")
+		this.DOMElement.dispatchEvent( valueChangeEvent );
 	}
 	
 	set setData( data ) { //This is data to populate the slicer with
@@ -153,16 +156,16 @@ class Slicers extends Event {
 	listenToSlicer( slicer ) {
 		slicer.DOMElement.addEventListener('value_changed', async (args)=>{
 			let data = await this.getData(slicer.independentVariable, args.detail, slicer );
-
-			/*
-			if( typeof this.customFunction != "undefined" ) {
-				data = this.customizeBindData(this.customFunction.key, this.customFunction.func, data)
-			}
-			*/
 			console.log("=> Slicing data:", data);
 
-			//this.reset();
 			this.render( data );
+		});
+
+		slicer.DOMElement.addEventListener('updated', async (args)=>{
+			// let data = await this.getData(slicer.independentVariable, args.detail, slicer );
+			// console.log("=> Slicing data:", data);
+
+			this.render( );
 		});
 	}
 }
