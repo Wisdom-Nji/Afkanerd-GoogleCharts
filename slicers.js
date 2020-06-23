@@ -51,25 +51,6 @@ class Slicers extends Event {
 		optgroup.label = typeof this.label == "undefined" ? this.independentVariable : this.label
 
 		let option = new Option("-- Select All --", "<select_all>")
-		/*
-		option.onclick = ((e)=>{
-			let data = (()=>{
-				let v_data = []
-				for(let i in optgroup.childNodes)
-					if(optgroup.childNodes[i].tagName == "OPTION") {
-						optgroup.childNodes[i].selected = true
-						v_data.push(optgroup.childNodes[i].value)
-					}
-
-				return v_data
-			})()
-			// console.log("data", data)
-			if( data.length > 0) {
-				let valueChangeEvent = new CustomEvent("value_changed", { detail: data })
-				this.DOMElement.dispatchEvent( valueChangeEvent );
-			}
-		})
-		*/
 		optgroup.appendChild(option)
 		if( typeof this.unify != "undefined" && this.unify == true ) {
 			let u_data = new Set()
