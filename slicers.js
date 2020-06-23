@@ -35,6 +35,7 @@ class Slicers extends Event {
 
 	render( data ) {
 		if(typeof data == "undefined" || data === null) data = this.data;
+		if(typeof data == "undefined") data = []
 		let optgroup = document.createElement("optgroup")
 		optgroup.label = typeof this.label == "undefined" ? this.independentVariable : this.label
 
