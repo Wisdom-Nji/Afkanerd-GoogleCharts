@@ -58,7 +58,7 @@ class Slicers extends Event {
 		if( typeof this.unify != "undefined" && this.unify == true ) {
 			let u_data = new Set()
 			for( let i in data )
-				u_data.add( this.customFunction.func(data[i]) )
+				u_data.add( typeof this.customFunction == "undefined" ? data[i] : this.customFunction.func(data[i]) )
 			data = Array.from( u_data )
 		}
 		for(let i = 0;i<data.length;i++) {

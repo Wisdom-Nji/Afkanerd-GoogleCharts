@@ -203,13 +203,15 @@ class Graphs {
 			computedData[unifiedKey] = category[i]
 			for( let k in data ) {
 				let data_unique_value = (typeof slicer == "undefined" || typeof slicer.customFunction == "undefined") ? data[k][unifiedKey] : slicer.customFunction.func( data[k][unifiedKey] )
-				// console.log("unique_data_value: " + data_unique_value)
-				// console.log("unique_category  : " + category[i])
+				console.log("unique_data_value: " + data_unique_value)
+				console.log("unique_category  : " + category[i])
 				if( data_unique_value == category[i] ) {
+					// TODO: Make this into a custom function
 					for( let j = 1; j< tmpColumns.length; ++j ) {
-						computedData[tmpColumns[j][1]] = 
-						Object.keys(computedData).indexOf(tmpColumns[j][1]) < 0 ?
-						Number(data[k][tmpColumns[j][1]]):
+						let label_loc = Object.keys(computedData).indexOf(tmpColumns[j][1])
+						// console.log("label_loc - ", label_loc, " - j: ", j)
+						computedData[tmpColumns[j][1]] = label_loc < 0 ?
+						Number(data[k][tmpColumns[j][1]]) :
 						Number(computedData[tmpColumns[j][1]]) + Number(data[k][tmpColumns[j][1]])
 					}
 				}
