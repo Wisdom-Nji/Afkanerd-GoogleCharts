@@ -44,6 +44,10 @@ class Slicers extends Event {
 		this.label = label
 	}
 
+	setCustomSortFunction( customSortFunction ) {
+		this.customSortFunction = customSortFunction
+	}
+
 	render( data ) {
 		if(typeof data == "undefined" || data === null) data = this.data;
 		if(typeof data == "undefined") data = []
@@ -57,6 +61,9 @@ class Slicers extends Event {
 			for( let i in data )
 				u_data.add( typeof this.customFunction == "undefined" ? data[i] : this.customFunction.func(data[i]) )
 			data = Array.from( u_data )
+			
+			if(typeof this.customSortFunction != "undefined" ) 
+				data = this.customSortFunction( data )
 		}
 		for(let i = 0;i<data.length;i++) {
 			let other_options = new Option(data[i], data[i] );
@@ -108,22 +115,19 @@ class Slicers extends Event {
 
 	// addData( data ) - this is useful for adding data without iterating through all the data points //TODO:
 
-	/*
-	customizeSetBindData( key, customFunction, data, newKey, typeNewKey ) {
+	customizeBindData( key, customFunction, data, newKey, typeNewKey ) {
 		let u_data = new Set()
 		for(let i in data ) {
-			// data[i][typeof newKey == "undefined" ? key : newKey] = customFunction( data[i][key] )
-			u_data.add( data[i][this.independentVariable] )
+			data[i][typeof newKey == "undefined" ? key : newKey] = customFunction( data[i][key] )
+			// u_data.add( data[i][this.independentVariable] )
 		}
 
 		if(typeof newKey != "undefined" && typeof typeNewKey != "undefined")
 			this.typeIndependentVariable = typeNewKey
 
-		this.data = Array.from( u_data )
+		// this.data = Array.from( u_data )
 		this.boundData = data
 	}
-	*/
-
 
 	getData( independentVariable, values, slicers ) {
 		return new Promise( (resolve, reject)=> {

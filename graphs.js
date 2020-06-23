@@ -67,6 +67,7 @@ class Graphs {
 	getData( independentVariable, values,slicers ) {
 		return new Promise( (resolve, reject)=> {
 			let v_data = []
+			console.log("slicer.boundData", slicers.boundData)
 			for(let i in slicers.boundData ){
 				let isCustomSlicer = (value) => {
 					let custom_data = slicers.boundData[i][independentVariable]
@@ -226,6 +227,7 @@ class Graphs {
 
 	addSlicer( slicer ) {
 		slicer.DOMElement.addEventListener('value_changed', async ( args )=>{
+			console.log("=> About to graph for: ", args.detail)
 			let data = await this.getData(slicer.independentVariable, args.detail,slicer );
 			console.log("=> Graphing data:", data);
 
