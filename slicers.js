@@ -54,6 +54,12 @@ class Slicers extends Event {
 			this.DOMElement.dispatchEvent( valueChangeEvent );
 		})
 		optgroup.appendChild(option)
+		if( typeof this.unify != "undefined" && this.unify == true ) {
+			let u_data = new Set()
+			for( let i in data )
+				u_data.add( this.customFunction.func(data[i]) )
+			data = Array.from( u_data )
+		}
 		for(let i = 0;i<data.length;i++) {
 			let other_options = new Option(data[i], data[i] );
 			optgroup.appendChild(other_options);
@@ -100,10 +106,11 @@ class Slicers extends Event {
 
 	// addData( data ) - this is useful for adding data without iterating through all the data points //TODO:
 
+	/*
 	customizeSetBindData( key, customFunction, data, newKey, typeNewKey ) {
 		let u_data = new Set()
 		for(let i in data ) {
-			data[i][typeof newKey == "undefined" ? key : newKey] = customFunction( data[i][key] )
+			// data[i][typeof newKey == "undefined" ? key : newKey] = customFunction( data[i][key] )
 			u_data.add( data[i][this.independentVariable] )
 		}
 
@@ -113,6 +120,7 @@ class Slicers extends Event {
 		this.data = Array.from( u_data )
 		this.boundData = data
 	}
+	*/
 
 
 	getData( independentVariable, values, slicers ) {
