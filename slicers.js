@@ -139,7 +139,7 @@ class Slicers extends Event {
 				}
 			}
 			
-			// this.boundData = Array.from(new_boundData )
+			this.boundData = Array.from(new_boundData )
 			resolve(Array.from(u_data));
 		});
 
