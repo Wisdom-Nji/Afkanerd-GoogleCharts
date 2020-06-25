@@ -54,8 +54,10 @@ class Slicers extends Event {
 		let optgroup = document.createElement("optgroup")
 		optgroup.label = typeof this.label == "undefined" ? this.independentVariable : this.label
 
+		/*
 		let option = new Option("-- Select All --", "<select_all>")
 		optgroup.appendChild(option)
+		*/
 		if( typeof this.unify != "undefined" && this.unify == true ) {
 			let u_data = new Set()
 			for( let i in data )
@@ -70,12 +72,10 @@ class Slicers extends Event {
 			optgroup.appendChild(other_options);
 		}
 
-		// This should empty the render slicer, but id doesn't
-		// console.warn("=> Destorying slicer element");
-		
-		// This method is quite slow and should have a faster method of chaning the values of the content
 		this.DOMElement.innerHTML = "";
+		// console.log( optgroup )
 		this.DOMElement.appendChild( optgroup );
+		// console.log("appended options", this.DOMElement)
 
 		let valueChangeEvent = new CustomEvent("updated")
 		this.DOMElement.dispatchEvent( valueChangeEvent );
