@@ -48,8 +48,7 @@ class Slicers extends Event {
 		this.customSortFunction = customSortFunction
 	}
 
-	render( data ) {
-		let selectAll = false
+	render( data, selectAll = false ) {
 		if(typeof data == "undefined" || data === null) {
 			data = this.data;
 			selectAll = true
@@ -77,13 +76,16 @@ class Slicers extends Event {
 			if( selectAll )
 				other_options.selected = true
 		}
+		console.log("rendering data", data)
 
 		this.DOMElement.innerHTML = "";
 		// console.log( optgroup )
 		this.DOMElement.appendChild( optgroup );
 		// console.log("appended options", this.DOMElement)
 
-		let valueChangeEvent = new CustomEvent("updated")
+		let valueChangeEvent = new CustomEvent("value_changed", { detail: data })
+		// console.log( valueChangeEvent )
+		// let valueChangeEvent = new CustomEvent("updated")
 		this.DOMElement.dispatchEvent( valueChangeEvent );
 	}
 	
@@ -166,7 +168,7 @@ class Slicers extends Event {
 			let data = await this.getData(slicer.independentVariable, args.detail, slicer );
 			console.log("=> Slicing data:", data);
 
-			this.render( data );
+			this.render( data, true );
 		});
 
 		slicer.DOMElement.addEventListener('updated', async (args)=>{
