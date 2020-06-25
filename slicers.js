@@ -49,7 +49,11 @@ class Slicers extends Event {
 	}
 
 	render( data ) {
-		if(typeof data == "undefined" || data === null) data = this.data;
+		let selectAll = false
+		if(typeof data == "undefined" || data === null) {
+			data = this.data;
+			selectAll = true
+		}
 		if(typeof data == "undefined") data = []
 		let optgroup = document.createElement("optgroup")
 		optgroup.label = typeof this.label == "undefined" ? this.independentVariable : this.label
@@ -70,6 +74,8 @@ class Slicers extends Event {
 		for(let i = 0;i<data.length;i++) {
 			let other_options = new Option(data[i], data[i] );
 			optgroup.appendChild(other_options);
+			if( selectAll )
+				other_options.selected = true
 		}
 
 		this.DOMElement.innerHTML = "";
