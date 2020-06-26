@@ -76,7 +76,7 @@ class Slicers extends Event {
 			if( selectAll )
 				other_options.selected = true
 		}
-		console.log("rendering data", data)
+		// console.log("rendering data", data)
 
 		this.DOMElement.innerHTML = "";
 		// console.log( optgroup )
@@ -164,9 +164,9 @@ class Slicers extends Event {
 
 	listenToSlicer( slicer ) {
 		slicer.DOMElement.addEventListener('value_changed', async (args)=>{
-			console.log("=> About to slicer for: ", args.detail)
+			// console.log("=> About to slicer for: ", args.detail)
 			let data = await this.getData(slicer.independentVariable, args.detail, slicer );
-			console.log("=> Slicing data:", data);
+			// console.log("=> Slicing data:", data);
 
 			this.render( data, true );
 		});

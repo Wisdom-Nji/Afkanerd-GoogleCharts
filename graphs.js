@@ -67,7 +67,7 @@ class Graphs {
 	getData( independentVariable, values,slicers ) {
 		return new Promise( (resolve, reject)=> {
 			let v_data = []
-			console.log("slicer.boundData", slicers.boundData)
+			// console.log("slicer.boundData", slicers.boundData)
 			for(let i in slicers.boundData ){
 				let isCustomSlicer = (value) => {
 					let custom_data = slicers.boundData[i][independentVariable]
@@ -148,7 +148,7 @@ class Graphs {
 			}
 			return v_data
 		})()
-		console.log("columnDetails", columnDetails)
+		// console.log("columnDetails", columnDetails)
 		view.setColumns(columnDetails);
 
 		switch( this.type ) {
@@ -195,7 +195,7 @@ class Graphs {
 		// console.log("unifiedKey: " + unifiedKey )
 		for( let i in data )
 			category.add( (typeof slicer == "undefined" || typeof slicer.customFunction == "undefined") ? data[i][unifiedKey] : slicer.customFunction.func(data[i][unifiedKey]) )
-		console.log("category", category)
+		// console.log("category", category)
 
 		let structure = []
 		category = Array.from( category )
@@ -221,15 +221,15 @@ class Graphs {
 			structure.push(computedData)
 		}
 		
-		console.log("final structure", structure)
+		// console.log("final structure", structure)
 		return structure
 	}
 
 	addSlicer( slicer ) {
 		slicer.DOMElement.addEventListener('value_changed', async ( args )=>{
-			console.log("=> About to graph for: ", args.detail)
+			// console.log("=> About to graph for: ", args.detail)
 			let data = await this.getData(slicer.independentVariable, args.detail,slicer );
-			console.log("=> Graphing data:", data);
+			// console.log("=> Graphing data:", data);
 
 			// this.render( data );
 			this.render( data, slicer );
