@@ -164,7 +164,7 @@ class Slicers extends Event {
 
 	listenToSlicer( slicer ) {
 		slicer.DOMElement.addEventListener('value_changed', async (args)=>{
-			// console.log("=> About to slicer for: ", args.detail)
+			console.log("value changed", args.detail )
 			let data = await this.getData(slicer.independentVariable, args.detail, slicer );
 			// console.log("=> Slicing data:", data);
 
