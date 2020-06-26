@@ -49,9 +49,9 @@ class Slicers extends Event {
 	}
 
 	render( data, selectAll = false ) {
-		if(typeof data == "undefined" || data === null) {
+		if( typeof data == "undefined" || data.length < 1 || data === null) {
 			data = this.data;
-			selectAll = true
+			selectAll = typeof selectAll == "undefined" ? true : selectAll
 		}
 		if(typeof data == "undefined") data = []
 		let optgroup = document.createElement("optgroup")
@@ -76,17 +76,19 @@ class Slicers extends Event {
 			if( selectAll )
 				other_options.selected = true
 		}
-		// console.log("rendering data", data)
+		console.log("rendering data", data)
 
 		this.DOMElement.innerHTML = "";
 		// console.log( optgroup )
 		this.DOMElement.appendChild( optgroup );
 		// console.log("appended options", this.DOMElement)
 
-		let valueChangeEvent = new CustomEvent("value_changed", { detail: data })
-		// console.log( valueChangeEvent )
-		// let valueChangeEvent = new CustomEvent("updated")
-		this.DOMElement.dispatchEvent( valueChangeEvent );
+		if( selectAll ) {
+			let valueChangeEvent = new CustomEvent("value_changed", { detail: data })
+			// console.log( valueChangeEvent )
+			// let valueChangeEvent = new CustomEvent("updated")
+			this.DOMElement.dispatchEvent( valueChangeEvent );
+		}
 	}
 	
 	set setData( data ) { //This is data to populate the slicer with
