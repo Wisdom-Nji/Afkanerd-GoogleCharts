@@ -33,6 +33,7 @@ class Slicers extends Event {
 			// slicers have customized data at this point, 
 			// that data has to be passed to the graph to use for filtering
 			if( data.length > 0 ) {
+				console.log(this.DOMElement.id + "=> event_value changed")
 				let valueChangeEvent = new CustomEvent("value_changed", { detail: data })
 				this.DOMElement.dispatchEvent( valueChangeEvent );
 			}
@@ -76,19 +77,18 @@ class Slicers extends Event {
 			if( selectAll )
 				other_options.selected = true
 		}
-		console.log("rendering data", data)
+		// console.log("rendering data", data)
 
 		this.DOMElement.innerHTML = "";
 		// console.log( optgroup )
 		this.DOMElement.appendChild( optgroup );
 		// console.log("appended options", this.DOMElement)
 
-		if( selectAll ) {
-			let valueChangeEvent = new CustomEvent("value_changed", { detail: data })
-			// console.log( valueChangeEvent )
-			// let valueChangeEvent = new CustomEvent("updated")
-			this.DOMElement.dispatchEvent( valueChangeEvent );
-		}
+		let valueChangeEvent = selectAll == true ? new CustomEvent("value_changed", { detail: data }) : new CustomEvent("updated")
+		console.log(this.DOMElement.id + "=> event_value changed", valueChangeEvent)
+		// console.log( valueChangeEvent )
+		// let valueChangeEvent = new CustomEvent("updated")
+		this.DOMElement.dispatchEvent( valueChangeEvent );
 	}
 	
 	set setData( data ) { //This is data to populate the slicer with
@@ -166,18 +166,18 @@ class Slicers extends Event {
 
 	listenToSlicer( slicer ) {
 		slicer.DOMElement.addEventListener('value_changed', async (args)=>{
-			console.log("value changed", args.detail )
+			// console.log("value changed", args.detail )
 			let data = await this.getData(slicer.independentVariable, args.detail, slicer );
 			// console.log("=> Slicing data:", data);
 
-			this.render( data, true );
+			this.render( data, false);
 		});
 
 		slicer.DOMElement.addEventListener('updated', async (args)=>{
 			// let data = await this.getData(slicer.independentVariable, args.detail, slicer );
 			// console.log("=> Slicing data:", data);
 
-			this.render( );
+			this.render([], false );
 		});
 	}
 }

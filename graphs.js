@@ -5,6 +5,7 @@ class Graphs {
 	dataKeys = []
 	dateAt = []
 	labels = false
+	customFunction
 
 	constructor( DOMLocation, columns, google ) {
 		if( document.getElementById( DOMLocation ) == null ) {
@@ -93,10 +94,18 @@ class Graphs {
 		this.unifiedColumn = un_column
 	}
 
+	setCustomFunction( customFunction ) {
+		this.customFunction = customFunction
+	}
+
 	render( data, slicer ) {
 		var chart;
 
-		data = typeof slicer == "undefined" ? this.unify(data) : this.unify(data, slicer)
+		if( typeof this.customFunction != "undefined" )
+			data = this.customFunction( data )
+		else 
+			data = typeof slicer == "undefined" ? this.unify(data) : this.unify(data, slicer)
+		console.log("rendering data", data)
 		let preparedData = (()=>{
 			let v_data = [[]]
 			// Columns number determines the number Dimensions = this.columns
