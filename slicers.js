@@ -62,15 +62,20 @@ class Slicers extends Event {
 		let option = new Option("-- Select All --", "<select_all>")
 		optgroup.appendChild(option)
 		*/
+		// console.log("pre-rendering data", data)
 		if( typeof this.unify != "undefined" && this.unify == true ) {
 			let u_data = new Set()
-			for( let i in data )
+			for( let i in data ) {
+				if( typeof data[i] == "undefined" )
+					continue
 				u_data.add( typeof this.customFunction == "undefined" ? data[i] : this.customFunction.func(data[i]) )
+			}
 			data = Array.from( u_data )
 			
 			if(typeof this.customSortFunction != "undefined" ) 
 				data = this.customSortFunction( data )
 		}
+		// console.log("rendering data", data)
 		for(let i = 0;i<data.length;i++) {
 			let other_options = new Option(data[i], data[i] );
 			optgroup.appendChild(other_options);

@@ -105,7 +105,7 @@ class Graphs {
 			data = this.customFunction( data )
 		else 
 			data = typeof slicer == "undefined" ? this.unify(data) : this.unify(data, slicer)
-		console.log("rendering data", data)
+		// console.log("rendering data", data)
 		let preparedData = (()=>{
 			let v_data = [[]]
 			// Columns number determines the number Dimensions = this.columns
@@ -202,9 +202,12 @@ class Graphs {
 		}
 		// console.log("tmpColumns", tmpColumns)
 		// console.log("unifiedKey: " + unifiedKey )
-		for( let i in data )
+		for( let i in data ){
+			if( typeof data[i][unifiedKey] == "undefined" )
+				continue
 			category.add( (typeof slicer == "undefined" || typeof slicer.customFunction == "undefined") ? data[i][unifiedKey] : slicer.customFunction.func(data[i][unifiedKey]) )
-		// console.log("category", category)
+		}
+		console.log("category", category)
 
 		let structure = []
 		category = Array.from( category )
