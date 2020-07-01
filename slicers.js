@@ -10,7 +10,7 @@ class Slicers extends Event {
 		this.DOMElement = document.getElementById( LabelDOMElement );
 
 		this.DOMElement.onchange = ()=>{
-			// console.log("=> setting slicer value: ", this.DOMElement.value );
+			// console.log(this.DOMElement.id, this.DOMElement.value );
 			let data = (()=> {
 				let v_data = []
 				for(let i in this.DOMElement.options) {
@@ -89,11 +89,21 @@ class Slicers extends Event {
 		this.DOMElement.appendChild( optgroup );
 		// console.log("appended options", this.DOMElement)
 
+		if(typeof this.customRefreshFunction != "undefined")
+			this.customRefreshFunction()
+
 		let valueChangeEvent = selectAll == true ? new CustomEvent("value_changed", { detail: data }) : new CustomEvent("updated")
 		console.log(this.DOMElement.id + "=> event_value changed", valueChangeEvent)
 		// console.log( valueChangeEvent )
 		// let valueChangeEvent = new CustomEvent("updated")
 		this.DOMElement.dispatchEvent( valueChangeEvent );
+
+
+		// TODO: remove this line and add only when needed
+	}
+
+	setCustomRefreshFunction( customRefreshFunction ) {
+		this.customRefreshFunction = customRefreshFunction
 	}
 	
 	set setData( data ) { //This is data to populate the slicer with
@@ -171,11 +181,13 @@ class Slicers extends Event {
 
 	listenToSlicer( slicer ) {
 		slicer.DOMElement.addEventListener('value_changed', async (args)=>{
-			// console.log("value changed", args.detail )
+			console.log("value changed", args.detail )
 			let data = await this.getData(slicer.independentVariable, args.detail, slicer );
-			// console.log("=> Slicing data:", data);
+			console.log("=> Slicing data:", data);
 
 			this.render( data, false);
+			// $('#' + this.DOMElement.id).selectpicker()
+			// $('select').selectpicker()
 		});
 
 		slicer.DOMElement.addEventListener('updated', async (args)=>{
@@ -183,6 +195,7 @@ class Slicers extends Event {
 			// console.log("=> Slicing data:", data);
 
 			this.render([], false );
+			// $('#' + this.DOMElement.id).selectpicker()
 		});
 	}
 }
