@@ -139,6 +139,7 @@ class Graphs {
 			// console.log(v_data);
 			return v_data;
 		})();
+		console.log( preparedData )
 
 		this.graphData = new this.google.visualization.arrayToDataTable( preparedData );
 		// console.log("Graph Data: ", this.graphData )
