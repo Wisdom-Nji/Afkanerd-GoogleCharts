@@ -224,10 +224,17 @@ class Graphs {
 					// TODO: Make this into a custom function
 					for( let j = 1; j< tmpColumns.length; ++j ) {
 						let label_loc = Object.keys(computedData).indexOf(tmpColumns[j][1])
+						let value = String(data[k][tmpColumns[j][1]])
+						value = value.replace(/\,/g,'')
+						value = parseInt( value, 10 )
+						// value = isNaN( value ) ? 0 : value
+						if( isNaN( value ) ) 
+							console.log( value )
+					
 						// console.log("label_loc - ", label_loc, " - j: ", j)
 						computedData[tmpColumns[j][1]] = label_loc < 0 ?
-						Number(data[k][tmpColumns[j][1]]) :
-						Number(computedData[tmpColumns[j][1]]) + Number(data[k][tmpColumns[j][1]])
+						value :
+						Number(computedData[tmpColumns[j][1]]) + value 
 					}
 				}
 			}				
