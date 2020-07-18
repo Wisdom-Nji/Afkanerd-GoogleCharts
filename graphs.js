@@ -225,14 +225,9 @@ class Graphs {
 					for( let j = 1; j< tmpColumns.length; ++j ) {
 						let label_loc = Object.keys(computedData).indexOf(tmpColumns[j][1])
 						// console.log("label_loc - ", label_loc, " - j: ", j)
-						let value = data[k][tmpColumns[j][1]]
-						value = Number( value )
-						value = isNaN( value ) ? 0 : value
 						computedData[tmpColumns[j][1]] = label_loc < 0 ?
-						// Number(data[k][tmpColumns[j][1]]) :
-						// Number(computedData[tmpColumns[j][1]]) + Number(data[k][tmpColumns[j][1]])
-						value :
-						Number(computedData[tmpColumns[j][1]]) + value 
+						Number(data[k][tmpColumns[j][1]]) :
+						Number(computedData[tmpColumns[j][1]]) + Number(data[k][tmpColumns[j][1]])
 					}
 				}
 			}				
