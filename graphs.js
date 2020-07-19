@@ -222,17 +222,29 @@ class Graphs {
 					// TODO: Make this into a custom function
 					for( let j = 1; j< tmpColumns.length; ++j ) {
 						let label_loc = Object.keys(computedData).indexOf(tmpColumns[j][1])
+						let in_data = Object.keys(data[k]).indexOf(tmpColumns[j][1])
 						// console.log("label_loc - ", label_loc, " - j: ", j)
 						let value = data[k][tmpColumns[j][1]]
-						if( isNaN( value )){
+						if( in_data < 0){
 							// console.log("tmpColumns[j][1]", tmpColumns[j][1])
 							// console.log("NaN:", value)
-							continue
+							// continue
 						}
-						value = Number(data[k][tmpColumns[j][1]])
+						if(typeof value == "undefined" )
+							value = 0
+						else 
+							value = isNaN(value) || value == '' ? 0 : Number(data[k][tmpColumns[j][1]])
 						computedData[tmpColumns[j][1]] = label_loc < 0 ?
 						value :
-						Number(computedData[tmpColumns[j][1]]) + Number(data[k][tmpColumns[j][1]])
+						Number(computedData[tmpColumns[j][1]]) + value 
+
+						/*
+						if( computedData[tmpColumns[j][1]] == 0 && tmpColumns[j][1] == "# of people with BAC+ on treatment") {
+							console.log("val.", value)
+							console.log("data.k.", data[k])
+							return structure
+						}
+						*/
 					}
 				}
 			}				
