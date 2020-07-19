@@ -185,7 +185,8 @@ class Slicers extends Event {
 			let data = await this.getData(slicer.independentVariable, args.detail, slicer );
 			console.log("=> Slicing data:", data);
 
-			this.render( data, false);
+			// this.render( data, false);
+			this.render( data, true);
 			// $('#' + this.DOMElement.id).selectpicker()
 			// $('select').selectpicker()
 		});
