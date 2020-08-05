@@ -186,7 +186,7 @@ class Slicers extends Event {
 			console.log("=> Slicing data:", data);
 
 			// this.render( data, false);
-			this.render( data, true);
+			this.render( data, false);
 			// $('#' + this.DOMElement.id).selectpicker()
 			// $('select').selectpicker()
 		});
