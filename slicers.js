@@ -179,14 +179,14 @@ class Slicers extends Event {
 
 	}
 
-	listenToSlicer( slicer ) {
+	listenToSlicer( slicer, render = false) {
 		slicer.DOMElement.addEventListener('value_changed', async (args)=>{
 			console.log("value changed", args.detail )
 			let data = await this.getData(slicer.independentVariable, args.detail, slicer );
 			console.log("=> Slicing data:", data);
 
 			// this.render( data, false);
-			this.render( data, false);
+			this.render( data, render);
 			// $('#' + this.DOMElement.id).selectpicker()
 			// $('select').selectpicker()
 		});
