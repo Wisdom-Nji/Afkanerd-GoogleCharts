@@ -8,6 +8,7 @@ class Slicers extends Event {
 		super('onchange');
 		this.LabelDOMElement = LabelDOMElement;
 		this.DOMElement = document.getElementById( LabelDOMElement );
+		this.pem_mem = {}
 
 		this.DOMElement.onchange = ()=>{
 			// console.log(this.DOMElement.id, this.DOMElement.value );
@@ -66,17 +67,23 @@ class Slicers extends Event {
 				data = this.customSortFunction( data )
 		}
 
+		let v_data = []
 		for(let i = 0;i<data.length;i++) {
 			let other_options = new Option(data[i], data[i] );
-			optgroup.appendChild(other_options);
 			if( selectAll )
 				other_options.selected = true
-			else {
-				if( typeof this.memory != "undefined" && this.memory.findIndex(value=> data[i] == value ) != -1 ) {
-					console.log("Memory: ", data[i] );
+			else if( typeof this.memory != "undefined" && this.memory.length > 0 ) {
+				console.log("Memory: ", data[i] );
+				if( this.memory.findIndex(value=> data[i] == value) != -1) {
 					other_options.selected = true 
+					v_data.push(data[i])
 				}
 			}
+			optgroup.appendChild(other_options);
+		}
+		console.log("v_data", v_data)
+		if( v_data.length > 0 ) {
+			data = v_data
 		}
 		this.DOMElement.innerHTML = "";
 		this.DOMElement.appendChild( optgroup );
@@ -84,7 +91,7 @@ class Slicers extends Event {
 		if(typeof this.customRefreshFunction != "undefined")
 			this.customRefreshFunction()
 
-		let valueChangeEvent = selectAll == true ? new CustomEvent("value_changed", { detail: data }) : new CustomEvent("updated", {detail: data})
+		let valueChangeEvent = selectAll == true ? new CustomEvent("value_changed", { detail: v_data.length > 0 ? v_data : data }) : new CustomEvent("updated", {detail: v_data.length > 0 ? v_data : data})
 		console.log(this.DOMElement.id + "=> event_value changed", valueChangeEvent)
 		this.DOMElement.dispatchEvent( valueChangeEvent );
 
@@ -169,22 +176,19 @@ class Slicers extends Event {
 
 	}
 
-	listenToSlicer( slicer, render = false) {
+	listenToSlicer( slicer, selectAll = false, _pem_mem = false) {
 		slicer.DOMElement.addEventListener('value_changed', async (args)=>{
-			console.log("value changed", args.detail )
-			let data = await this.getData(slicer.independentVariable, args.detail, slicer );
-			console.log("=> Slicing data:", data);
-			this.render( data, render);
+			let data = args.detail
+			data = await this.getData(slicer.independentVariable, data, slicer );
+			// this.render(data, slicer.pem_mem[this.DOMElement.id])
+			// should I render myself with all my values?
+			this.render( data, selectAll)
 		});
 
 		// This works only when everything is refreshed, or when a slicer changes in a way that needs everything selected
 		slicer.DOMElement.addEventListener('updated', async (args)=>{
 			// let data = await this.getData(slicer.independentVariable, args.detail, slicer );
-			// console.log("=> Slicing data:", data);
-
-			let data = await this.getData(slicer.independentVariable, args.detail, slicer );
-			this.render( data, selectAll ); // This renders the whole series of data which is available to this slicer
-			// $('#' + this.DOMElement.id).selectpicker()
+			this.render([], true)
 		});
 	}
 }
