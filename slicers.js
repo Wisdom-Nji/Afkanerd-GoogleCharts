@@ -15,14 +15,6 @@ class Slicers extends Event {
 				let v_data = []
 				for(let i in this.DOMElement.options) {
 					let option = this.DOMElement.options[i];
-					if(option.selected && option.value == "<select_all>") {
-						for(let i=1;i<this.DOMElement.options.length;++i) {
-							let option = this.DOMElement.options[i]
-							option.selected = true // For UX reasons
-							v_data.push(option.value)
-						}
-						break
-					}
 
 					if(option.selected) 
 						v_data.push(option.value)
@@ -30,6 +22,8 @@ class Slicers extends Event {
 				return v_data;
 			})()
 
+			// Store this information and keep in memory forever
+			this.memory = data
 			// slicers have customized data at this point, 
 			// that data has to be passed to the graph to use for filtering
 			if( data.length > 0 ) {
@@ -54,15 +48,11 @@ class Slicers extends Event {
 			data = this.data;
 			selectAll = typeof selectAll == "undefined" ? true : selectAll
 		}
+
 		if(typeof data == "undefined") data = []
 		let optgroup = document.createElement("optgroup")
 		optgroup.label = typeof this.label == "undefined" ? this.independentVariable : this.label
 
-		/*
-		let option = new Option("-- Select All --", "<select_all>")
-		optgroup.appendChild(option)
-		*/
-		// console.log("pre-rendering data", data)
 		if( typeof this.unify != "undefined" && this.unify == true ) {
 			let u_data = new Set()
 			for( let i in data ) {
@@ -75,27 +65,27 @@ class Slicers extends Event {
 			if(typeof this.customSortFunction != "undefined" ) 
 				data = this.customSortFunction( data )
 		}
-		// console.log("rendering data", data)
+
 		for(let i = 0;i<data.length;i++) {
 			let other_options = new Option(data[i], data[i] );
 			optgroup.appendChild(other_options);
 			if( selectAll )
 				other_options.selected = true
+			else {
+				if( typeof this.memory != "undefined" && this.memory.findIndex(value=> data[i] == value ) != -1 ) {
+					console.log("Memory: ", data[i] );
+					other_options.selected = true 
+				}
+			}
 		}
-		// console.log("rendering data", data)
-
 		this.DOMElement.innerHTML = "";
-		// console.log( optgroup )
 		this.DOMElement.appendChild( optgroup );
-		// console.log("appended options", this.DOMElement)
 
 		if(typeof this.customRefreshFunction != "undefined")
 			this.customRefreshFunction()
 
-		let valueChangeEvent = selectAll == true ? new CustomEvent("value_changed", { detail: data }) : new CustomEvent("updated")
+		let valueChangeEvent = selectAll == true ? new CustomEvent("value_changed", { detail: data }) : new CustomEvent("updated", {detail: data})
 		console.log(this.DOMElement.id + "=> event_value changed", valueChangeEvent)
-		// console.log( valueChangeEvent )
-		// let valueChangeEvent = new CustomEvent("updated")
 		this.DOMElement.dispatchEvent( valueChangeEvent );
 
 
@@ -154,7 +144,7 @@ class Slicers extends Event {
 		this.boundData = data
 	}
 
-	getData( independentVariable, values, slicers ) {
+	getData( independentVariable, values, slicers, keepMemory ) {
 		return new Promise( (resolve, reject)=> {
 			let u_data = new Set()
 			let new_boundData = new Set()
@@ -184,18 +174,16 @@ class Slicers extends Event {
 			console.log("value changed", args.detail )
 			let data = await this.getData(slicer.independentVariable, args.detail, slicer );
 			console.log("=> Slicing data:", data);
-
-			// this.render( data, false);
 			this.render( data, render);
-			// $('#' + this.DOMElement.id).selectpicker()
-			// $('select').selectpicker()
 		});
 
+		// This works only when everything is refreshed, or when a slicer changes in a way that needs everything selected
 		slicer.DOMElement.addEventListener('updated', async (args)=>{
 			// let data = await this.getData(slicer.independentVariable, args.detail, slicer );
 			// console.log("=> Slicing data:", data);
 
-			this.render([], false );
+			let data = await this.getData(slicer.independentVariable, args.detail, slicer );
+			this.render( data, selectAll ); // This renders the whole series of data which is available to this slicer
 			// $('#' + this.DOMElement.id).selectpicker()
 		});
 	}
