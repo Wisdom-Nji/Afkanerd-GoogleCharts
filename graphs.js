@@ -68,7 +68,7 @@ class Graphs {
 	getData( independentVariable, values,slicers ) {
 		return new Promise( (resolve, reject)=> {
 			let v_data = []
-			// console.log("slicer.boundData", slicers.boundData)
+			// // console.log("slicer.boundData", slicers.boundData)
 			for(let i in slicers.boundData ){
 				let isCustomSlicer = (value) => {
 					let custom_data = slicers.boundData[i][independentVariable]
@@ -105,12 +105,12 @@ class Graphs {
 			data = this.customFunction( data )
 		else 
 			data = typeof slicer == "undefined" ? this.unify(data) : this.unify(data, slicer)
-		// console.log("rendering data", data)
+		// // console.log("rendering data", data)
 		let preparedData = (()=>{
 			let v_data = [[]]
 			// Columns number determines the number Dimensions = this.columns
 			for(let i in this.columns) {
-				// console.log("column: " + this.columns[i][0])
+				// // console.log("column: " + this.columns[i][0])
 				if( this.columns[i][0] == 'style' ) 
 					v_data[0].push( {role: 'style'})
 				else if( this.columns[i][0] == 'annotation') continue
@@ -123,12 +123,12 @@ class Graphs {
 				for(let j in this.columns ) {
 					if( this.columns[j][0] == 'annotation') continue
 					if( this.columns[j][0] == 'style') {
-						// console.log("Pushing: " + this.columns[j][1])
+						// // console.log("Pushing: " + this.columns[j][1])
 						dataRow.push( this.columns[j][1] )
 						continue
 					}
 					let axis = this.columns[j].findIndex(variable => 'date' == variable ) == -1 ? data[i][this.columns[j][1]] : new Date( data[i][this.columns[j][1]] )
-					// console.log("Pushing: " + axis)
+					// // console.log("Pushing: " + axis)
 					dataRow.push( axis )
 
 				}
@@ -136,13 +136,13 @@ class Graphs {
 				v_data.push( dataRow )
 			}
 
-			// console.log(v_data);
+			// // console.log(v_data);
 			return v_data;
 		})();
-		console.log( preparedData )
+		// console.log( preparedData )
 
 		this.graphData = new this.google.visualization.arrayToDataTable( preparedData );
-		// console.log("Graph Data: ", this.graphData )
+		// // console.log("Graph Data: ", this.graphData )
 		let view = new this.google.visualization.DataView( this.graphData )
 		let columnDetails = (()=>{
 			let loc = 0
@@ -158,7 +158,7 @@ class Graphs {
 			}
 			return v_data
 		})()
-		// console.log("columnDetails", columnDetails)
+		// // console.log("columnDetails", columnDetails)
 		view.setColumns(columnDetails);
 
 		switch( this.type ) {
@@ -201,14 +201,14 @@ class Graphs {
 			tmpColumns[0][0] = typeof typeIndependentVariable == "undefined" ? tmpColumns[0][0] : typeIndependentVariable
 			tmpColumns[0][1] = unifiedKey
 		}
-		// console.log("tmpColumns", tmpColumns)
-		// console.log("unifiedKey: " + unifiedKey )
+		// // console.log("tmpColumns", tmpColumns)
+		// // console.log("unifiedKey: " + unifiedKey )
 		for( let i in data ){
 			if( typeof data[i][unifiedKey] == "undefined" )
 				continue
 			category.add( (typeof slicer == "undefined" || typeof slicer.customFunction == "undefined") ? data[i][unifiedKey] : slicer.customFunction.func(data[i][unifiedKey]) )
 		}
-		console.log("category", category)
+		// console.log("category", category)
 
 		let structure = []
 		category = Array.from( category )
@@ -223,11 +223,11 @@ class Graphs {
 					for( let j = 1; j< tmpColumns.length; ++j ) {
 						let label_loc = Object.keys(computedData).indexOf(tmpColumns[j][1])
 						let in_data = Object.keys(data[k]).indexOf(tmpColumns[j][1])
-						// console.log("label_loc - ", label_loc, " - j: ", j)
+						// // console.log("label_loc - ", label_loc, " - j: ", j)
 						let value = data[k][tmpColumns[j][1]]
 						if( in_data < 0){
-							// console.log("tmpColumns[j][1]", tmpColumns[j][1])
-							// console.log("NaN:", value)
+							// // console.log("tmpColumns[j][1]", tmpColumns[j][1])
+							// // console.log("NaN:", value)
 							// continue
 						}
 						if(typeof value == "undefined" )
@@ -240,8 +240,8 @@ class Graphs {
 
 						/*
 						if( computedData[tmpColumns[j][1]] == 0 && tmpColumns[j][1] == "# of people with BAC+ on treatment") {
-							console.log("val.", value)
-							console.log("data.k.", data[k])
+							// console.log("val.", value)
+							// console.log("data.k.", data[k])
 							return structure
 						}
 						*/
@@ -251,15 +251,15 @@ class Graphs {
 			structure.push(computedData)
 		}
 		
-		// console.log("final structure", structure)
+		// // console.log("final structure", structure)
 		return structure
 	}
 
 	addSlicer( slicer ) {
 		slicer.DOMElement.addEventListener('value_changed', async ( args )=>{
-			// console.log("=> About to graph for: ", args.detail)
+			// // console.log("=> About to graph for: ", args.detail)
 			let data = await this.getData(slicer.independentVariable, args.detail ,slicer );
-			// console.log("=> Graphing data:", data);
+			// // console.log("=> Graphing data:", data);
 
 			// this.render( data );
 			this.render( data, slicer );
