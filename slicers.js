@@ -44,6 +44,10 @@ class Slicers extends Event {
 		this.customSortFunction = customSortFunction
 	}
 
+	setCustomLoaderFunction( customLoaderFunction ) {
+		this.customLoaderFunction = customSortFunction
+	}
+
 	render( data, selectAll = false ) {
 		return new Promise((resolve, reject)=>{
 			if( typeof data == "undefined" || data.length < 1 || data === null) {
@@ -203,14 +207,16 @@ class Slicers extends Event {
 
 		// This works only when everything is refreshed, or when a slicer changes in a way that needs everything selected
 		slicer.DOMElement.addEventListener('updated', async (args)=>{
+			this.customLoaderFunction('start')
 			// let data = await this.getData(slicer.independentVariable, args.detail, slicer );
 			let selectAll = false
 			// console.log(slicer.LabelDOMElement)
 			if(typeof this.pemMemory[slicer.LabelDOMElement] != "undefined" )
 				selectAll = this.pemMemory[slicer.LabelDOMElement]
 			// console.log(this.DOMElement.id, "=> select_all=", selectAll)
-			await this.render([], selectAll)
+			this.render([], selectAll)
 			this.customRefreshFunction()
+			this.customLoaderFunction('end')
 		});
 	}
 }
