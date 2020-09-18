@@ -44,10 +44,6 @@ class Slicers extends Event {
 		this.customSortFunction = customSortFunction
 	}
 
-	setCustomLoaderFunction( customLoaderFunction ) {
-		this.customLoaderFunction = customSortFunction
-	}
-
 	render( data, selectAll = false ) {
 		return new Promise((resolve, reject)=>{
 			if( typeof data == "undefined" || data.length < 1 || data === null) {
@@ -191,9 +187,6 @@ class Slicers extends Event {
 
 	listenToSlicer( slicer, selectAll = false) {
 		this.pemMemory[slicer.LabelDOMElement] = selectAll
-		// console.log("Seting pem mem to true")
-		// console.log(this.pemMemory)
-
 		slicer.DOMElement.addEventListener('value_changed', async (args)=>{
 			// console.log(args.detail)
 			const data = args.detail
@@ -207,7 +200,6 @@ class Slicers extends Event {
 
 		// This works only when everything is refreshed, or when a slicer changes in a way that needs everything selected
 		slicer.DOMElement.addEventListener('updated', async (args)=>{
-			this.customLoaderFunction('start')
 			// let data = await this.getData(slicer.independentVariable, args.detail, slicer );
 			let selectAll = false
 			// console.log(slicer.LabelDOMElement)
@@ -216,7 +208,6 @@ class Slicers extends Event {
 			// console.log(this.DOMElement.id, "=> select_all=", selectAll)
 			this.render([], selectAll)
 			this.customRefreshFunction()
-			this.customLoaderFunction('end')
 		});
 	}
 }

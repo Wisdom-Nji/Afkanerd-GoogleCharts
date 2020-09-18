@@ -28,6 +28,10 @@ class Graphs {
 		this.columnDetails = columnDetails
 	}
 
+	setCustomLoaderFunction( customLoaderFunction ) {
+		this.customLoaderFunction = customLoaderFunction
+	}
+
 	addColumn( type, value ) {
 		this.dataKeys.push( value );
 		this.columnCollection.push([type,value]);
@@ -99,6 +103,7 @@ class Graphs {
 	}
 
 	render( data, slicer ) {
+	return new Promise((resolve, reject)=>{
 		var chart;
 
 		if( typeof this.customFunction != "undefined" )
@@ -182,6 +187,9 @@ class Graphs {
 		// chart.draw(this.graphData, this.option);
 		chart.draw(view, this.option);
 		// chart.draw(view, this.google.charts.Bar.convertOptions(this.option))
+
+		resolve()
+	})
 	}
 
 	unify( data, slicer ) {
@@ -257,12 +265,14 @@ class Graphs {
 
 	addSlicer( slicer ) {
 		slicer.DOMElement.addEventListener('value_changed', async ( args )=>{
+			this.customLoaderFunction('start')
 			// // console.log("=> About to graph for: ", args.detail)
 			let data = await this.getData(slicer.independentVariable, args.detail ,slicer );
 			// // console.log("=> Graphing data:", data);
 
 			// this.render( data );
-			this.render( data, slicer );
+			await this.render( data, slicer );
+			this.customLoaderFunction('end')
 		});
 	}
 
