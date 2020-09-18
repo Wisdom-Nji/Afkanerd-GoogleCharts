@@ -88,7 +88,7 @@ class Slicers extends Event {
 
 		let customizedDataSet = {
 			data : data,
-			slicer : this
+			pem_mem : this.pemMemory
 		}
 
 		data = customizedDataSet
@@ -184,16 +184,18 @@ class Slicers extends Event {
 
 	}
 
-	listenToSlicer( slicer, selectAll = false, _pem_mem = false) {
-		if( _pem_mem) 
-			this.pemMemory[this.LabelDOMElement] = selectAll
+	listenToSlicer( slicer, selectAll = false) {
+		this.pemMemory[slicer.LabelDOMElement] = selectAll
+		console.log("Seting pem mem to true")
+		console.log(this.pemMemory)
 
 		slicer.DOMElement.addEventListener('value_changed', async (args)=>{
 			// console.log(args.detail)
 			const data = args.detail.data
 			let new_data = await this.getData(slicer.independentVariable, data, slicer );
-			// this.render(data, slicer.pem_mem[this.DOMElement.id])
-			// should I render myself with all my values?
+			let selectAll = false
+			if(typeof this.pemMemory[slicer.LabelDOMElement] != "undefined" )
+				selectAll = this.pemMemory[slicer.LabelDOMElement]
 			this.render( new_data, selectAll)
 		});
 
@@ -201,9 +203,9 @@ class Slicers extends Event {
 		slicer.DOMElement.addEventListener('updated', async (args)=>{
 			// let data = await this.getData(slicer.independentVariable, args.detail, slicer );
 			let selectAll = false
-			const OSlicer = args.detail.slicer
-			if( OSlicer.pemMemory.hasOwnProperty(this.LabelDOMElement) )
-				selectAll = OSlicer.pemMemory[this.LabelDOMElement]
+			console.log(slicer.LabelDOMElement)
+			if(typeof this.pemMemory[slicer.LabelDOMElement] != "undefined" )
+				selectAll = this.pemMemory[slicer.LabelDOMElement]
 			console.log(this.DOMElement.id, "=> select_all=", selectAll)
 			this.render([], selectAll)
 		});
