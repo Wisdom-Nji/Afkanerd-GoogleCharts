@@ -258,7 +258,7 @@ class Graphs {
 	addSlicer( slicer ) {
 		slicer.DOMElement.addEventListener('value_changed', async ( args )=>{
 			// console.log("=> About to graph for: ", args.detail)
-			let data = await this.getData(slicer.independentVariable, args.detail,slicer );
+			let data = await this.getData(slicer.independentVariable, args.detail.data ,slicer );
 			// console.log("=> Graphing data:", data);
 
 			// this.render( data );

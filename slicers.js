@@ -8,7 +8,7 @@ class Slicers extends Event {
 		super('onchange');
 		this.LabelDOMElement = LabelDOMElement;
 		this.DOMElement = document.getElementById( LabelDOMElement );
-		this.pem_mem = {}
+		this.pemMemory = {}
 
 		this.DOMElement.onchange = ()=>{
 			// console.log(this.DOMElement.id, this.DOMElement.value );
@@ -85,13 +85,20 @@ class Slicers extends Event {
 		if( v_data.length > 0 ) {
 			data = v_data
 		}
+
+		let customizedDataSet = {
+			data : data,
+			slicer : this
+		}
+
+		data = customizedDataSet
 		this.DOMElement.innerHTML = "";
 		this.DOMElement.appendChild( optgroup );
 
 		if(typeof this.customRefreshFunction != "undefined")
 			this.customRefreshFunction()
 
-		let valueChangeEvent = selectAll == true ? new CustomEvent("value_changed", { detail: v_data.length > 0 ? v_data : data }) : new CustomEvent("updated", {detail: v_data.length > 0 ? v_data : data})
+		let valueChangeEvent = selectAll == true ? new CustomEvent("value_changed", { detail: data }) : new CustomEvent("updated", {detail: data})
 		console.log(this.DOMElement.id + "=> event_value changed", valueChangeEvent)
 		this.DOMElement.dispatchEvent( valueChangeEvent );
 
@@ -152,6 +159,7 @@ class Slicers extends Event {
 	}
 
 	getData( independentVariable, values, slicers, keepMemory ) {
+		console.log("Constant value: ", values)
 		return new Promise( (resolve, reject)=> {
 			let u_data = new Set()
 			let new_boundData = new Set()
@@ -177,18 +185,27 @@ class Slicers extends Event {
 	}
 
 	listenToSlicer( slicer, selectAll = false, _pem_mem = false) {
+		if( _pem_mem) 
+			this.pemMemory[this.LabelDOMElement] = selectAll
+
 		slicer.DOMElement.addEventListener('value_changed', async (args)=>{
-			let data = args.detail
-			data = await this.getData(slicer.independentVariable, data, slicer );
+			// console.log(args.detail)
+			const data = args.detail.data
+			let new_data = await this.getData(slicer.independentVariable, data, slicer );
 			// this.render(data, slicer.pem_mem[this.DOMElement.id])
 			// should I render myself with all my values?
-			this.render( data, selectAll)
+			this.render( new_data, selectAll)
 		});
 
 		// This works only when everything is refreshed, or when a slicer changes in a way that needs everything selected
 		slicer.DOMElement.addEventListener('updated', async (args)=>{
 			// let data = await this.getData(slicer.independentVariable, args.detail, slicer );
-			this.render([], true)
+			let selectAll = false
+			const OSlicer = args.detail.slicer
+			if( OSlicer.pemMemory.hasOwnProperty(this.LabelDOMElement) )
+				selectAll = OSlicer.pemMemory[this.LabelDOMElement]
+			console.log(this.DOMElement.id, "=> select_all=", selectAll)
+			this.render([], selectAll)
 		});
 	}
 }
