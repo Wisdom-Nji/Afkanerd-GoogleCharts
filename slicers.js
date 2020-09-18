@@ -91,7 +91,7 @@ class Slicers extends Event {
 			pem_mem : this.pemMemory
 		}
 
-		data = customizedDataSet
+		let renderedData = customizedDataSet
 		this.DOMElement.innerHTML = "";
 		this.DOMElement.appendChild( optgroup );
 
@@ -190,8 +190,8 @@ class Slicers extends Event {
 		console.log(this.pemMemory)
 
 		slicer.DOMElement.addEventListener('value_changed', async (args)=>{
-			// console.log(args.detail)
-			const data = args.detail.data
+			console.log(args.detail)
+			const data = args.detail
 			let new_data = await this.getData(slicer.independentVariable, data, slicer );
 			let selectAll = false
 			if(typeof this.pemMemory[slicer.LabelDOMElement] != "undefined" )
