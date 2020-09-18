@@ -45,63 +45,66 @@ class Slicers extends Event {
 	}
 
 	render( data, selectAll = false ) {
-		if( typeof data == "undefined" || data.length < 1 || data === null) {
-			data = this.data;
-			selectAll = typeof selectAll == "undefined" ? true : selectAll
-		}
-
-		if(typeof data == "undefined") data = []
-		let optgroup = document.createElement("optgroup")
-		optgroup.label = typeof this.label == "undefined" ? this.independentVariable : this.label
-
-		if( typeof this.unify != "undefined" && this.unify == true ) {
-			let u_data = new Set()
-			for( let i in data ) {
-				if( typeof data[i] == "undefined" )
-					continue
-				u_data.add( typeof this.customFunction == "undefined" ? data[i] : this.customFunction.func(data[i]) )
+		return new Promise((resolve, reject)=>{
+			if( typeof data == "undefined" || data.length < 1 || data === null) {
+				data = this.data;
+				selectAll = typeof selectAll == "undefined" ? true : selectAll
 			}
-			data = Array.from( u_data )
-			
-			if(typeof this.customSortFunction != "undefined" ) 
-				data = this.customSortFunction( data )
-		}
 
-		let v_data = []
-		for(let i = 0;i<data.length;i++) {
-			let other_options = new Option(data[i], data[i] );
-			if( typeof this.memory != "undefined" && this.memory.length > 0 ) {
-				selectAll = false
-				console.log(this.LabelDOMElement, ":MEM>> ", this.memory)
-				if( this.memory.findIndex(value=> data[i] == value) != -1) {
-					other_options.selected = true 
+			if(typeof data == "undefined") data = []
+			let optgroup = document.createElement("optgroup")
+			optgroup.label = typeof this.label == "undefined" ? this.independentVariable : this.label
+
+			if( typeof this.unify != "undefined" && this.unify == true ) {
+				let u_data = new Set()
+				for( let i in data ) {
+					if( typeof data[i] == "undefined" )
+						continue
+					u_data.add( typeof this.customFunction == "undefined" ? data[i] : this.customFunction.func(data[i]) )
 				}
-				else {
-					data.splice(i, 1)
-					--i
-				}
+				data = Array.from( u_data )
+				
+				if(typeof this.customSortFunction != "undefined" ) 
+					data = this.customSortFunction( data )
 			}
-			if( (typeof this.memory == "undefined" || this.memory.length < 1) &&  selectAll == true ) 
-				other_options.selected = true
-			optgroup.appendChild(other_options);
-		}
-		console.log(this.LabelDOMElement, ":DATA>> ", data)
 
-		this.DOMElement.innerHTML = "";
-		this.DOMElement.appendChild( optgroup );
+			let v_data = []
+			for(let i = 0;i<data.length;i++) {
+				let other_options = new Option(data[i], data[i] );
+				if( typeof this.memory != "undefined" && this.memory.length > 0 ) {
+					selectAll = false
+					console.log(this.LabelDOMElement, ":MEM>> ", this.memory)
+					if( this.memory.findIndex(value=> data[i] == value) != -1) {
+						other_options.selected = true 
+					}
+					else {
+						data.splice(i, 1)
+						--i
+					}
+				}
+				if( (typeof this.memory == "undefined" || this.memory.length < 1) &&  selectAll == true ) 
+					other_options.selected = true
+				optgroup.appendChild(other_options);
+			}
+			console.log(this.LabelDOMElement, ":DATA>> ", data)
 
-		if(typeof this.customRefreshFunction != "undefined") {
-			this.customRefreshFunction()
-			console.log("Activating custom refresh..")
-		}
+			this.DOMElement.innerHTML = "";
+			this.DOMElement.appendChild( optgroup );
 
-		// let valueChangeEvent = selectAll == true ? new CustomEvent("value_changed", { detail: data }) : new CustomEvent("updated", {detail: data})
-		let valueChangeEvent = new CustomEvent("value_changed", { detail: data })
-		// console.log(this.DOMElement.id + "=> event_value changed", valueChangeEvent)
-		this.DOMElement.dispatchEvent( valueChangeEvent );
+			if(typeof this.customRefreshFunction != "undefined") {
+				this.customRefreshFunction()
+				console.log("Activating custom refresh..")
+			}
 
+			// let valueChangeEvent = selectAll == true ? new CustomEvent("value_changed", { detail: data }) : new CustomEvent("updated", {detail: data})
+			let valueChangeEvent = new CustomEvent("value_changed", { detail: data })
+			// console.log(this.DOMElement.id + "=> event_value changed", valueChangeEvent)
+			this.DOMElement.dispatchEvent( valueChangeEvent );
 
-		// TODO: remove this line and add only when needed
+			// TODO: remove this line and add only when needed
+
+			resolve()
+		})
 	}
 
 	setCustomRefreshFunction( customRefreshFunction ) {
@@ -194,7 +197,8 @@ class Slicers extends Event {
 			let selectAll = false
 			if(typeof this.pemMemory[slicer.LabelDOMElement] != "undefined" )
 				selectAll = this.pemMemory[slicer.LabelDOMElement]
-			this.render( new_data, selectAll)
+			await this.render( new_data, selectAll)
+			this.customRefreshFunction()
 		});
 
 		// This works only when everything is refreshed, or when a slicer changes in a way that needs everything selected
@@ -205,7 +209,8 @@ class Slicers extends Event {
 			if(typeof this.pemMemory[slicer.LabelDOMElement] != "undefined" )
 				selectAll = this.pemMemory[slicer.LabelDOMElement]
 			// console.log(this.DOMElement.id, "=> select_all=", selectAll)
-			this.render([], selectAll)
+			await this.render([], selectAll)
+			this.customRefreshFunction()
 		});
 	}
 }
