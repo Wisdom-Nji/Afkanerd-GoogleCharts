@@ -2,10 +2,11 @@
 'use strict';
 
 class Slicers extends Event {
-	customFunction
-	boundData
 	constructor( LabelDOMElement ) {
 		super('onchange');
+		this.customFunction
+		this.boundData
+
 		this.LabelDOMElement = LabelDOMElement;
 		this.DOMElement = document.getElementById( LabelDOMElement );
 		this.pemMemory = {}

@@ -2,15 +2,15 @@
 
 
 class Graphs {
-	dataKeys = []
-	dateAt = []
-	labels = false
-	customFunction
-
 	constructor( DOMLocation, columns, google ) {
 		if( document.getElementById( DOMLocation ) == null ) {
 			console.error("=> DOMLocation is not a valid path");
 		}
+
+		this.dataKeys = []
+		this.dateAt = []
+		this.labels = false
+		this.customFunction
 
 		this.DOMLocation = DOMLocation;
 		this.DOMElement = document.getElementById( this.DOMLocation );
