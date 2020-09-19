@@ -188,6 +188,9 @@ class Slicers extends Event {
 
 	listenToSlicer( slicer, selectAll = false) {
 		this.pemMemory[slicer.LabelDOMElement] = selectAll
+		// Check the state of everyone you listen to, this is where the secret keys to the kingdom is
+		// event which ask everybody to broadcast the data they're currently having
+
 		slicer.DOMElement.addEventListener('value_changed', async (args)=>{
 			// console.log(args.detail)
 			const data = args.detail
